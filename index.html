@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <title>Big Squeeze App</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Big Squeeze App">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="big-squeeze.css">
+</head>
+<body>
+
+    <div id="header" class="header">
+        <img src="./images/big_squeeze_logo.webp" width="15%" alt="The Big Squeeze Logo" /><h1>The Big Squeeze</h1>
+    </div>
+        
+    <div class="container">
+
+        <div id="home-screen" class="tab-content">
+            <div class="hero-text center">Hey there!</div>
+            <div id="lemmy-wave" class="center"><img src="./images/character/lemmy-wave-512.webp" width="75%" alt="" /></div>
+            <h2 class="no-border">Lemme tell you what's happening.</h2>
+            <div id="news-feed"><div class="spinner"><img class="spin-img" src="images/lemon-slice.webp" width="96px" alt="" /></div></div>
+        </div>
+        
+        <div id="events-screen" class="tab-content hidden">
+          <h2>Events</h2>
+          <div id="lemmy-events" class="character-r"><img src="./images/character/lemmy-run-512.webp" width="25%" alt="" /></div>
+        
+          <!-- Sticky Day Filter Bar -->
+          <div class="day-filter-container">
+            <button id="btn-day1" class="day-btn active">Friday</button>
+            <button id="btn-day2" class="day-btn">Saturday</button>
+          </div>
+        
+          <!-- Cards Container -->
+          <div id="all-events"><div class="spinner"><img class="spin-img" src="images/lemon-slice.webp" width="96px" alt="" /></div></div>
+        </div>
+        
+        <div id="stands-screen" class="tab-content hidden">
+            <h2><span id="stands-header-title">Lemonade Stands</span></h2>
+            <div id="lemmy-lemonade" class="character-r"><img src="./images/character/lemmy-lemonade-512.webp" width="25%" alt="" /></div>
+            <div id="all-stands"><div class="spinner"><img class="spin-img" src="images/lemon-slice.webp" width="96px" alt="" /></div></div>
+        </div>
+
+        <div id="map-screen" class="tab-content hidden">
+            <div class="map-responsive">
+                <iframe id="default-map" src="about:blank" loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <div id="amenities-screen" class="tab-content hidden">
+            <h2>Amenities</h2>
+            <div id="lemmy-lemonade" class="character-r"><img src="./images/character/lemmy-thumbsup-512.webp" width="25%" alt="" /></div>
+            <div id="all-amenities"><div class="spinner"><img class="spin-img" src="images/lemon-slice.webp" width="96px" alt="" /></div></div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+         <div class="tab-link active" id="nav-home" onclick="switchTab('home')">
+            <span class="tab-icon" aria-hidden="true"><img src=./images/navigation/home-32.webp alt="" /></span>
+        </div>       
+        <div class="tab-link" id="nav-events" onclick="switchTab('events')">
+            <span class="tab-icon" aria-hidden="true"><img src=./images/navigation/calendar-32.webp alt="" /></span>
+        </div>
+        <div class="tab-link" id="nav-stands" onclick="switchTab('stands')">
+            <span class="tab-icon" aria-hidden="true"><img src=./images/navigation/lemonade-32.webp alt="" /></span>
+        </div>
+        <div class="tab-link" id="nav-map" onclick="switchTab('map')">
+            <span class="tab-icon" aria-hidden="true"><img src=./images/navigation/map-32.webp alt="" /></span>
+        </div>
+        <div class="tab-link" id="nav-amenities" onclick="switchTab('amenities')">
+            <span class="tab-icon" aria-hidden="true"><img src=./images/navigation/amenities-32.webp alt="" /></span>
+        </div>
+        <div id="nav-indicator"></div>
+    </nav>
+
+<script src="big-squeeze.js"></script>
+</body>
+</html>
