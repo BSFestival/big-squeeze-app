@@ -129,7 +129,8 @@ async function initDatabaseApp() {
                 dbDetails[row.Detail_ID.trim()] = {
                     name: row.Detail_Name ? row.Detail_Name.trim() : "",
                     image: row.Detail_Image ? row.Detail_Image.trim() : "",
-                    desc: processedDesc
+                    desc: processedDesc;
+                    shareDtl: row.Detail_Sharable ? row.Detail_Sharable.trim() : ""
                 };
             }
         });
@@ -147,7 +148,8 @@ async function initDatabaseApp() {
                 mapUrl: dbLocations[locId]?.mapUrl || "#",
                 dname: dbDetails[DtlId]?.name || "",
                 image: dbDetails[DtlId]?.image || "",
-                details: dbDetails[DtlId]?.desc || ""
+                details: dbDetails[DtlId]?.desc || "",
+                shareEvt: dbDetails[DtlId]?.shareDtl || ""
             };
         });
 
@@ -257,6 +259,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const itemDetails = item.details ? item.details.trim() : (item.content ? item.content.trim() : "");
         const itemImage = item.image ? item.image.trim() : "";
         const hasDetailsButton = (itemDetails !== "") || (itemImage !== "");
+        const isSharable = (item.shareEvt !== "");
         const uniqueId = `${elementId}-details-${index}`;
         
         // String Escaping
@@ -352,6 +355,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                        <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
                        
                        <!-- Safe Share Button using Data Attributes -->
+                       ${isSharable ? `
                        <div class="details-share-wrapper">
                            <button onclick="shareDetails(this, event)" 
                                    data-title="${safeTitleAttr}" 
@@ -360,7 +364,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                                    aria-label="Share Event">
                                <img src="images/buttons/share.webp" alt="Share" />
                            </button>
-                       </div>
+                       </div>' : ""}
                    </div>
                ` : ''}
             </div>`;
