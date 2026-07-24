@@ -304,6 +304,16 @@ h2 {
   display: table; 
 }
 
+.news-card-title {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.news-card-desc {
+    margin: 0;
+    padding-top: 5px;
+}
+
 /* ==========================================================================
    6. BUTTONS & INTERACTION ELEMENTS
    ========================================================================== */
