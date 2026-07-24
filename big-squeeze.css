@@ -486,7 +486,7 @@ h2 {
   position: relative;
   width: 100%;
   height: calc(100dvh - 125px); /* Explicit dynamic height forcing iframe visibility */
-  min-height: 500px;           /* Safety floor so map never collapses */
+  min-height: 495px;           /* Safety floor so map never collapses */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   margin-bottom: 10px;
