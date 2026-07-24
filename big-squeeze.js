@@ -259,7 +259,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const itemDetails = item.details ? item.details.trim() : (item.content ? item.content.trim() : "");
         const itemImage = item.image ? item.image.trim() : "";
         const hasDetailsButton = (itemDetails !== "") || (itemImage !== "");
-        const isSharable = (item.shareEvt !== "");
+        const isEventsScreen = elementId === "all-events";
+        const isSharable = isEventsScreen && item.shareEvt && item.shareEvt.trim().toUpperCase() === "Y";
         const uniqueId = `${elementId}-details-${index}`;
         
         // String Escaping
