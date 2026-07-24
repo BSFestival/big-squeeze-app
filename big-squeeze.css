@@ -467,20 +467,28 @@ h2 {
 /* ==========================================================================
    8. MEDIA & FEATURE-SPECIFIC COMPONENTS
    ========================================================================== */
-/* Map Screen Full-Viewport Layout */
+/* Map Screen Full-Viewport Container */
 #map-screen {
-  /* Fills available screen height minus top padding and bottom nav bar */
-  height: calc(100dvh - 95px); 
+  width: 100%;
+  /* Fallback for older browsers + modern dynamic viewport calculation */
+  min-height: calc(100vh - 100px);
+  min-height: calc(100dvh - 100px); 
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+}
+
+#map-screen:not(.hidden) {
+  display: flex !important; /* Ensures flex layout applies when active tab */
 }
 
 .map-responsive {
   position: relative;
   width: 100%;
-  flex: 1;                     /* Automatically expands to fill all available space */
+  height: calc(100dvh - 120px); /* Explicit dynamic height forcing iframe visibility */
+  min-height: 500px;           /* Safety floor so map never collapses */
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   margin-bottom: 10px;
   overflow: hidden;
 }
