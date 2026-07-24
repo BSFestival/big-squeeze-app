@@ -346,28 +346,30 @@ function renderCards(list, elementId, emptyMsg, isLive) {
             <div class="card highlight-shadow-box">
                 ${cardInnerHtml}
                 
-                ${hasDetailsButton ? `
-                   <div id="${uniqueId}" class="expanded-details">
-                       ${item.dname ? `<h3>${item.dname}</h3>` : ''}
-                       <div id="${uniqueId}-image" class="dtl-image">
-                           ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
-                       </div>
-                       <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
-                       
-                       <!-- Safe Share Button using Data Attributes -->
-                       ${isSharable ? `
-                       <div class="details-share-wrapper">
-                           <button onclick="shareDetails(this, event)" 
-                                   data-title="${safeTitleAttr}" 
-                                   data-details="${safeDetailsAttr}" 
-                                   class="g-btn" 
-                                   aria-label="Share Event">
-                               <img src="images/buttons/share.webp" alt="Share" />
-                           </button>
-                       </div>' : ""}
-                   </div>
-               ` : ''}
-            </div>`;
+         /* Inside renderCards() loop in big-squeeze.js */
+
+         ${hasDetailsButton ? `
+             <div id="${uniqueId}" class="expanded-details">
+                 ${item.dname ? `<h3>${item.dname}</h3>` : ''}
+                 <div id="${uniqueId}-image" class="dtl-image">
+                     ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
+                 </div>
+                 <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
+                 
+                 <!-- Safe Share Button renders ONLY if Detail_Sharable == "Y" -->
+                 ${isSharable ? `
+                 <div class="details-share-wrapper">
+                     <button onclick="shareDetails(this, event)" 
+                             data-title="${safeTitleAttr}" 
+                             data-details="${safeDetailsAttr}" 
+                             class="g-btn" 
+                             aria-label="Share Event">
+                         <img src="images/buttons/share.webp" alt="Share" />
+                     </button>
+                 </div>` : ''}
+             </div>
+         ` : ''}            
+      </div>`;
     });
 }
 
