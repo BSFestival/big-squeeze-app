@@ -82,8 +82,21 @@ async function initDatabaseApp() {
             document.title = params["App_Title"];
         }
         if (params["Welcome_Hero"]) {
-            document.querySelector("#home-screen .hero-text").innerText = params["Welcome_Hero"];
-        }
+             // 1. Split the string into an array using the '|' delimiter
+             const heroOptions = params["Welcome_Hero"].split('|').map(opt => opt.trim()).filter(opt => opt !== "");
+         
+             if (heroOptions.length > 0) {
+                 // 2. Pick a random index
+                 const randomIndex = Math.floor(Math.random() * heroOptions.length);
+                 const selectedHeroText = heroOptions[randomIndex];
+         
+                 // 3. Update the Home screen DOM
+                 const heroElem = document.querySelector("#home-screen .hero-text");
+                 if (heroElem) {
+                     heroElem.innerText = selectedHeroText;
+                 }
+             }
+         }
         if (params["Default_Map_URL"]) {
             const mainMapIframe = document.getElementById("default-map");
             if (mainMapIframe) {
