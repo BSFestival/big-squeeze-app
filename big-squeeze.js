@@ -412,9 +412,9 @@ function renderNewsFeed() {
 
         newsContainer.innerHTML += `
             <div class="card news-card">
-                <div class="card-title" style="margin-top: 5px; margin-bottom: 5px;">${item.title}</div>
+                <div class="card-title news-card-title">${item.title}</div>
                 ${imageHtml}
-                <p class="dtl-desc" style="margin: 0; padding-top: 5px;">${item.content}</p>
+                <p class="dtl-desc news-card-desc">${item.content}</p>
             </div>`;
     });
 }
