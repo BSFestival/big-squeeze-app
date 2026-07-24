@@ -368,7 +368,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                      </button>
                  </div>` : ''}
              </div>
-         ` : ''}            
+         ` : ''}
+         
       </div>`;
     });
 }
