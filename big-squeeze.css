@@ -471,8 +471,8 @@ h2 {
 #map-screen {
   width: 100%;
   /* Fallback for older browsers + modern dynamic viewport calculation */
-  min-height: calc(100vh - 100px);
-  min-height: calc(100dvh - 100px); 
+  min-height: calc(100vh - 105px);
+  min-height: calc(100dvh - 105px); 
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -485,7 +485,7 @@ h2 {
 .map-responsive {
   position: relative;
   width: 100%;
-  height: calc(100dvh - 120px); /* Explicit dynamic height forcing iframe visibility */
+  height: calc(100dvh - 125px); /* Explicit dynamic height forcing iframe visibility */
   min-height: 500px;           /* Safety floor so map never collapses */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
