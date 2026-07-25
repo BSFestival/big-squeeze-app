@@ -230,7 +230,13 @@ async function initDatabaseApp() {
         renderNewsFeed();
         renderAmenities();
         switchTab('home');
-
+ 
+      // Hide Loading Screen / Spinner Container
+        const loadingElem = document.getElementById("loading-screen") || document.querySelector(".spinner");
+        if (loadingElem) {
+            loadingElem.classList.add("hidden");
+        }
+       
     } catch (err) {
         console.error("Database initialization processing crash failure:", err);
         document.getElementById("all-events").innerText = "Failed to sync remote database entries.";
