@@ -148,7 +148,8 @@ async function initDatabaseApp() {
                      latitude: lat,
                      longitude: long,
                      zoom: zoom,
-                     mapUrl: constructedMapUrl + "(" + row.Loc_Name.trim() + ")"
+                     mapUrl: constructedMapUrl 
+                    // + "(" + row.Loc_Name.trim() + ")"
                  };
              }
          });
