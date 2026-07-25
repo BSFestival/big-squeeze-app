@@ -582,3 +582,12 @@ h2 {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.load-text {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  padding: 30px; 
+  color: var(--text-color);
+  font-size: 1em;
+}
