@@ -96,6 +96,11 @@ h2 {
   box-sizing: border-box; 
 }
 
+/* Ensure tab contents hide cleanly when inactive */
+.tab-content.hidden {
+  display: none !important;
+}
+
 .header { 
   position: relative; 
   top: 0; 
@@ -571,8 +576,15 @@ h2 {
 .no-border { border-style: none; padding-bottom: 0; }
 .dtl-btn { padding-right: 20px; }
 .no-events { text-align: center; color: var(--text-color); font-style: italic; padding: 20px; }
-.hidden { display: none !important; }
 
+/* Force hide all hidden utilities and active overlays */
+.hidden, 
+.tab-content.hidden,
+#loading-screen.hidden { 
+  display: none !important; 
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
 .highlight-shadow-box { 
   border: 1px solid; 
   border-top-color: var(--card-hlight); 
