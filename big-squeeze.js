@@ -363,7 +363,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     <div class="card-text-block">
                         <div class="card-title">${cardTitle}</div>
                         ${(hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
-                        <div class="location">${item.locationName || 'Festival Grounds'}</div>
+                        <div class="location">${item.locationName || 'Festival Grounds'}${item.town && item.town !== 'Unknown' ? `, ${item.town}` : ''}</div>
                     </div>
 
                     <div class="card-bottom-row">
