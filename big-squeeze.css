@@ -212,7 +212,7 @@ h2 {
   background: var(--pale-green); 
   padding: 15px; 
   margin: 10px 0; 
-  border: 1px solid var(--bold-green); 
+  border: 1.5px solid var(--bold-green); 
   border-radius: 16px; 
   box-shadow: 0 4px 8px rgba(0,0,0,0.12); 
 }
