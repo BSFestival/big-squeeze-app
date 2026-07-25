@@ -32,8 +32,6 @@
 /* ==========================================================================
    2. BASE RESETS & TYPOGRAPHY
    ========================================================================== */
--webkit-tap-highlight-color: transparent;
-
 body { 
   font-family: Arial, sans-serif; 
   margin: 0; 
@@ -86,6 +84,7 @@ h2 {
   display: flex; 
   flex-direction: column; 
   box-sizing: border-box; 
+  -webkit-tap-highlight-color: transparent;
 }
 
 .tab-content { 
