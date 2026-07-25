@@ -191,8 +191,6 @@ async function initDatabaseApp() {
             return {
                 id: row.Stand_ID ? row.Stand_ID.trim() : "",
                 name: row.Stand_Name ? row.Stand_Name.trim() : "Unnamed Stand",
-                start: row.Stand_Start ? row.Stand_Start.trim() : "",
-                end: row.Stand_End ? row.Stand_End.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
                 town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
