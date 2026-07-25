@@ -20,6 +20,7 @@ let dbParams = [];
 let dbNews = [];
 let dbAmenities = [];
 let selectedDayString = ""; 
+let selectedTownFilter = "ALL"; // State tracker for town filter
 let scheduleRefreshTimer = null;
 
 /* ==========================================================================
@@ -82,15 +83,12 @@ async function initDatabaseApp() {
             document.title = params["App_Title"];
         }
         if (params["Welcome_Hero"]) {
-             // 1. Split the string into an array using the '|' delimiter
              const heroOptions = params["Welcome_Hero"].split('|').map(opt => opt.trim()).filter(opt => opt !== "");
          
              if (heroOptions.length > 0) {
-                 // 2. Pick a random index
                  const randomIndex = Math.floor(Math.random() * heroOptions.length);
                  const selectedHeroText = heroOptions[randomIndex];
          
-                 // 3. Update the Home screen DOM
                  const heroElem = document.querySelector("#home-screen .hero-text");
                  if (heroElem) {
                      heroElem.innerText = selectedHeroText;
@@ -128,31 +126,29 @@ async function initDatabaseApp() {
             : "https://maps.google.com/maps?q=";        
 
        // Build Location Records & Construct Dynamic Map URLs
-         rawLocations.forEach(row => {
-             if (row.Loc_ID) {
-                 const lat = row.Loc_Lat ? row.Loc_Lat.trim() : "";
-                 const long = row.Loc_Long ? row.Loc_Long.trim() : "";
-                 const zoom = row.Zoom_Level ? row.Zoom_Level.trim() : "15"; // Defaults to 15 if blank
-         
-                 let constructedMapUrl = "#";
-         
-                 // Only generate a map URL if both coordinates are provided
-                 if (lat !== "" && long !== "") {
-                     // Embed query format: base + lat,long + &z=zoom + &output=embed
-                     constructedMapUrl = `${baseMapUrl}&ll=${lat}%2C${long}&z=${zoom}&q=${lat},${long}`;
-                 }
-         
-                 dbLocations[row.Loc_ID.trim()] = {
-                     name: row.Loc_Name ? row.Loc_Name.trim() : "Unknown Location",
-                     town: row.Loc_Town ? row.Loc_Town.trim() : "Unknown",
-                     latitude: lat,
-                     longitude: long,
-                     zoom: zoom,
-                     mapUrl: constructedMapUrl 
-                 };
-             }
-         });
-       
+        rawLocations.forEach(row => {
+            if (row.Loc_ID) {
+                const lat = row.Loc_Lat ? row.Loc_Lat.trim() : "";
+                const long = row.Loc_Long ? row.Loc_Long.trim() : "";
+                const zoom = row.Zoom_Level ? row.Zoom_Level.trim() : "15";
+
+                let constructedMapUrl = "#";
+
+                if (lat !== "" && long !== "") {
+                    constructedMapUrl = `${baseMapUrl}&ll=${lat}%2C${long}&z=${zoom}&q=${lat},${long}`;
+                }
+
+                dbLocations[row.Loc_ID.trim()] = {
+                    name: row.Loc_Name ? row.Loc_Name.trim() : "Unknown Location",
+                    town: row.Loc_Town ? row.Loc_Town.trim() : "Unknown",
+                    latitude: lat,
+                    longitude: long,
+                    zoom: zoom,
+                    mapUrl: constructedMapUrl 
+                };
+            }
+        });
+        
         rawDetails.forEach(row => {
             if(row.Detail_ID) {
                 let processedDesc = row.Detail_Descrip ? row.Detail_Descrip.trim() : "";
@@ -230,13 +226,13 @@ async function initDatabaseApp() {
         renderNewsFeed();
         renderAmenities();
         switchTab('home');
- 
-      // Hide Loading Screen / Spinner Container
+
+        // Hide Loading Screen Container
         const loadingElem = document.getElementById("loading-screen") || document.querySelector(".spinner");
         if (loadingElem) {
             loadingElem.classList.add("hidden");
         }
-       
+        
     } catch (err) {
         console.error("Database initialization processing crash failure:", err);
         document.getElementById("all-events").innerText = "Failed to sync remote database entries.";
@@ -261,15 +257,37 @@ function processAllSchedules() {
     
     renderCards(filteredEvents, "all-events", "No events scheduled for this day.", false);
 
-    const sortedStands = [...dbStands].sort((a, b) => a.name.localeCompare(b.name));
+    // Apply Town Filtering to Lemonade Stands
+    let filteredStands = [...dbStands];
+    if (selectedTownFilter !== "ALL") {
+        filteredStands = filteredStands.filter(s => s.town.toLowerCase() === selectedTownFilter.toLowerCase());
+    }
+
+    const sortedStands = filteredStands.sort((a, b) => a.name.localeCompare(b.name));
     
     // Count & append stands total to header
     const standsHeader = document.getElementById("stands-header-title");
     if (standsHeader) {
-        standsHeader.innerText = `${sortedStands.length} Lemonade Stands`;
+        const countLabel = selectedTownFilter === "ALL" 
+            ? `${sortedStands.length} Lemonade Stands` 
+            : `${sortedStands.length} Stands in ${selectedTownFilter}`;
+        standsHeader.innerText = countLabel;
     }
     
-    renderCards(sortedStands, "all-stands", "No lemonade stands found.", false);
+    renderCards(sortedStands, "all-stands", `No lemonade stands found in ${selectedTownFilter}.`, false);
+}
+
+// Town Filter Handler
+function filterStandsByTown(townName, event) {
+    selectedTownFilter = townName;
+
+    // Update active button state
+    document.querySelectorAll('.town-btn').forEach(btn => btn.classList.remove('active'));
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
+
+    processAllSchedules();
 }
 
 /* ==========================================================================
@@ -330,7 +348,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 <div class="card-content-split">
                     <div class="card-text-block">
                         <div class="card-title">${cardTitle}</div>
-                        <div class="location">${item.locationName || 'Festival Grounds'}, ${item.town || ''}</div>
+                        <div class="location">${item.locationName || 'Festival Grounds'}${item.town && item.town !== 'Unknown' ? `, ${item.town}` : ''}</div>
                     </div>
 
                     <div class="card-actions ca-inline">
@@ -375,7 +393,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                                   </div>
                               </div>
                               ` : ''}
-                           
+                            
                             ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
                         </div>
                     </div>
@@ -407,7 +425,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     </div>` : ''}
                 </div>
             ` : ''}
-         
+          
       </div>`;
     });
 }
@@ -498,14 +516,12 @@ function showMenuStep(menuId, stepNumber, event) {
 function toggleReminderMenu(menuId, event) {
     if (event) event.stopPropagation();
     
-    // Close any other open reminder menus across the page
     document.querySelectorAll('.reminder-menu').forEach(m => {
         if (m.id !== menuId) m.classList.remove('show');
     });
     
     const targetMenu = document.getElementById(menuId);
     if (targetMenu) {
-        // Reset to Step 1 whenever the menu is freshly opened
         showMenuStep(menuId, 1);
         targetMenu.classList.toggle('show');
     }
@@ -513,11 +529,10 @@ function toggleReminderMenu(menuId, event) {
 
 function shareDetails(buttonEl, event) {
     if (event) {
-        event.stopPropagation(); // Prevents parent card/accordion from collapsing
+        event.stopPropagation();
         event.preventDefault();
     }
 
-    // Safely extract text from HTML data-attributes
     const title = buttonEl.getAttribute('data-title') || 'Big Squeeze Event';
     const description = buttonEl.getAttribute('data-details') || '';
 
@@ -532,7 +547,6 @@ function shareDetails(buttonEl, event) {
             }
         });
     } else {
-        // Fallback for desktop browsers
         const shareText = `${title} - ${description}\n${window.location.href}`;
         navigator.clipboard.writeText(shareText).then(() => {
             alert("Event details copied to clipboard!");
@@ -547,7 +561,6 @@ function triggerNotificationPlaceholder(eventName, event) {
     if (event) event.stopPropagation();
     alert(`Push notification registration for "${eventName}" will be enabled once OneSignal integration is complete!`);
     
-    // Close all open reminder menus
     document.querySelectorAll('.reminder-menu').forEach(m => m.classList.remove('show'));
 }
 
@@ -612,32 +625,24 @@ function openLocationInAppMap(mapUrl) {
 }
 
 function switchTab(target) {
-    // 1. Hide all tabs and remove animation class
     document.querySelectorAll('.tab-content').forEach(s => {
         s.classList.add('hidden');
         s.classList.remove('animate-fade');
     });
     
-    // 2. Deactivate all navigation links
     document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
     
-    // 3. Reveal target screen and trigger fade-in
     const targetScreen = document.getElementById(`${target}-screen`);
     if (targetScreen) {
         targetScreen.classList.remove('hidden');
-        
-        // Force reflow/re-render so animation plays every time tab is clicked
         void targetScreen.offsetWidth; 
-        
         targetScreen.classList.add('animate-fade');
         window.scrollTo({ top: 0, behavior: 'instant' }); 
     }
     
-    // 4. Update Nav Active State
     const navBtn = document.getElementById(`nav-${target}`);
     if (navBtn) navBtn.classList.add('active');
 
-    // 5. Sliding Indicator Tracking
     const indicator = document.getElementById('nav-indicator');
     if (indicator) {
         const tabPositions = {
