@@ -104,13 +104,6 @@ async function initDatabaseApp() {
             }
         }
 
-       if (params["Loc_Map_URL"]) {
-            // 1. Determine Google Maps Base URL from Params (with a safety fallback)
-            const baseMapUrl = params["Loc_Map_URL"] 
-                ? params["Loc_Map_URL"].trim() 
-                : "https://maps.google.com/maps?q=";        
-       }
-       
         // Cache Refresh Timer Setup
         let refreshRate = 300000; // 5 minutes fallback default
         if (params["Refresh_Interval_MS"]) {
@@ -129,7 +122,12 @@ async function initDatabaseApp() {
             processAllSchedules();
         }, refreshRate);
         
-         // Build Location Records & Construct Dynamic Map URLs
+        // Determine Google Maps Base URL from Params (with a safety fallback)
+        const baseMapUrl = params["Loc_Map_URL"] 
+            ? params["Loc_Map_URL"].trim() 
+            : "https://maps.google.com/maps?q=";        
+
+       // Build Location Records & Construct Dynamic Map URLs
          rawLocations.forEach(row => {
              if (row.Loc_ID) {
                  const lat = row.Loc_Lat ? row.Loc_Lat.trim() : "";
