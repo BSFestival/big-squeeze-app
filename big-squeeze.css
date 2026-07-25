@@ -174,11 +174,11 @@ h2 {
 
 .town-btn {
     flex: 1;
-    background: var(--faint-yellow);
+    background: var(--soft-green);
     color: var(--day-inactive);
-    border: 1px solid var(--bold-green);
+    border: none;
     padding: 8px 10px;
-    border-radius: 6px;
+    border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
     font-size: 0.95em;
