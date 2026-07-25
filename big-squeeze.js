@@ -172,7 +172,7 @@ async function initDatabaseApp() {
                 start: row.Event_Start ? row.Event_Start.trim() : "",
                 end: row.Event_End ? row.Event_End.trim() : "",
                 thumbnail: row.Event_Thumbnail ? row.Event_Thumbnail.trim() : "",
-                locationName: dbLocations[locId]?.name || "Unknown Location",
+                locationName: dbLocations[locId]?.name || "To Be Determined",
                 town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#",
                 dname: dbDetails[DtlId]?.name || "",
@@ -187,7 +187,7 @@ async function initDatabaseApp() {
             return {
                 id: row.Stand_ID ? row.Stand_ID.trim() : "",
                 name: row.Stand_Name ? row.Stand_Name.trim() : "Unnamed Stand",
-                locationName: dbLocations[locId]?.name || "Unknown Location",
+                locationName: dbLocations[locId]?.name || "To Be Determined",
                 town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
             };
@@ -215,7 +215,7 @@ async function initDatabaseApp() {
                 title: row.Amenity_Title ? row.Amenity_Title.trim() : "",
                 content: processedContent,
                 image: row.Amenity_Image ? row.Amenity_Image.trim() : "",
-                locationName: dbLocations[locId]?.name || "Unknown Location",
+                locationName: dbLocations[locId]?.name || "To Be Determined",
                 town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
             };
