@@ -139,7 +139,7 @@ async function initDatabaseApp() {
                  // Only generate a map URL if both coordinates are provided
                  if (lat !== "" && long !== "") {
                      // Embed query format: base + lat,long + &z=zoom + &output=embed
-                     constructedMapUrl = `${baseMapUrl}&ll=${lat}%2C${long}&z=${zoom}`;
+                     constructedMapUrl = `${baseMapUrl}&ll=${lat}%2C${long}&z=${zoom}&q=${lat},${long}`;
                  }
          
                  dbLocations[row.Loc_ID.trim()] = {
@@ -148,7 +148,7 @@ async function initDatabaseApp() {
                      latitude: lat,
                      longitude: long,
                      zoom: zoom,
-                     mapUrl: constructedMapUrl
+                     mapUrl: constructedMapUrl + "(" + row.Loc_Name.trim() + ")"
                  };
              }
          });
@@ -326,7 +326,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 <div class="card-content-split">
                     <div class="card-text-block">
                         <div class="card-title">${cardTitle}</div>
-                        <div class="location">${item.locationName || 'Festival Grounds'}</div>
+                        <div class="location">${item.locationName || 'Festival Grounds'}, ${item.town || ''}</div>
                     </div>
 
                     <div class="card-actions ca-inline">
