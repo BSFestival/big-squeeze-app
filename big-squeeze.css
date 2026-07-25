@@ -73,6 +73,28 @@ h2 {
 }
 
 /* ==========================================================================
+   NATIVE APP-LIKE TOUCH & SELECTION RESETS
+   ========================================================================== */
+
+/* Disable gray tap highlight box on mobile webkit browsers */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent accidental text highlighting or long-press popup menus on UI controls */
+button,
+.g-btn,
+.tab-link,
+.day-btn,
+.town-btn,
+.reminder-menu {
+  -webkit-touch-callout: none; /* Disable iOS callout menu on press-and-hold */
+  -webkit-user-select: none;   /* Disable text selection */
+  user-select: none;
+  touch-action: manipulation;  /* Eliminates 300ms tap delay on mobile devices */
+}
+
+/* ==========================================================================
    3. LAYOUT & APP SHELL
    ========================================================================== */
 .container { 
