@@ -104,6 +104,13 @@ async function initDatabaseApp() {
             }
         }
 
+       if (params["Loc_Map_URL"]) {
+            // 1. Determine Google Maps Base URL from Params (with a safety fallback)
+            const baseMapUrl = params["Loc_Map_URL"] 
+                ? params["Loc_Map_URL"].trim() 
+                : "https://maps.google.com/maps?q=";        
+       }
+       
         // Cache Refresh Timer Setup
         let refreshRate = 300000; // 5 minutes fallback default
         if (params["Refresh_Interval_MS"]) {
@@ -122,18 +129,31 @@ async function initDatabaseApp() {
             processAllSchedules();
         }, refreshRate);
         
-        // Data Normalization Maps
-        rawLocations.forEach(row => {
-            if(row.Loc_ID) {
-                dbLocations[row.Loc_ID.trim()] = {
-                    name: row.Loc_Name ? row.Loc_Name.trim() : "Unknown Location",
-                    latitude: row.Loc_Lat ? row.Loc_Lat.trim() : "",
-                    longitude: row.Loc_Long ? row.Loc_Long.trim() : "",
-                    mapUrl: row.Loc_Map_URL ? row.Loc_Map_URL.trim() : "#"
-                };
-            }
-        });
-
+         // Build Location Records & Construct Dynamic Map URLs
+         rawLocations.forEach(row => {
+             if (row.Loc_ID) {
+                 const lat = row.Loc_Lat ? row.Loc_Lat.trim() : "";
+                 const long = row.Loc_Long ? row.Loc_Long.trim() : "";
+                 const zoom = row.Zoom_Level ? row.Zoom_Level.trim() : "15"; // Defaults to 15 if blank
+         
+                 let constructedMapUrl = "#";
+         
+                 // Only generate a map URL if both coordinates are provided
+                 if (lat !== "" && long !== "") {
+                     // Embed query format: base + lat,long + &z=zoom + &output=embed
+                     constructedMapUrl = `${baseMapUrl}&ll=${lat}%2C${long}&z=${zoom}`;
+                 }
+         
+                 dbLocations[row.Loc_ID.trim()] = {
+                     name: row.Loc_Name ? row.Loc_Name.trim() : "Unknown Location",
+                     latitude: lat,
+                     longitude: long,
+                     zoom: zoom,
+                     mapUrl: constructedMapUrl
+                 };
+             }
+         });
+       
         rawDetails.forEach(row => {
             if(row.Detail_ID) {
                 let processedDesc = row.Detail_Descrip ? row.Detail_Descrip.trim() : "";
