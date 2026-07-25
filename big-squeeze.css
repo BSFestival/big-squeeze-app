@@ -163,6 +163,33 @@ h2 {
   color: var(--day-active); 
 }
 
+/* Town Filter Bar for Stands Screen */
+.town-filter-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.town-btn {
+    flex: 1;
+    background: var(--faint-yellow);
+    color: var(--day-inactive);
+    border: 1px solid var(--bold-green);
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background 0.2s, color 0.2s;
+}
+
+.town-btn.active {
+    background: var(--bold-green);
+    color: var(--day-active);
+}
+
 /* Bottom Persistent Tab Bar */
 .bottom-nav { 
   position: fixed; 
