@@ -606,17 +606,32 @@ function openLocationInAppMap(mapUrl) {
 }
 
 function switchTab(target) {
-    document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
+    // 1. Hide all tabs and remove animation class
+    document.querySelectorAll('.tab-content').forEach(s => {
+        s.classList.add('hidden');
+        s.classList.remove('animate-fade');
+    });
+    
+    // 2. Deactivate all navigation links
     document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
     
+    // 3. Reveal target screen and trigger fade-in
     const targetScreen = document.getElementById(`${target}-screen`);
     if (targetScreen) {
         targetScreen.classList.remove('hidden');
+        
+        // Force reflow/re-render so animation plays every time tab is clicked
+        void targetScreen.offsetWidth; 
+        
+        targetScreen.classList.add('animate-fade');
         window.scrollTo({ top: 0, behavior: 'instant' }); 
     }
-    document.getElementById(`nav-${target}`).classList.add('active');
+    
+    // 4. Update Nav Active State
+    const navBtn = document.getElementById(`nav-${target}`);
+    if (navBtn) navBtn.classList.add('active');
 
-    // Sliding Indicator Tracking
+    // 5. Sliding Indicator Tracking
     const indicator = document.getElementById('nav-indicator');
     if (indicator) {
         const tabPositions = {
