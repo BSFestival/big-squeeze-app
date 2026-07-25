@@ -139,7 +139,7 @@ async function initDatabaseApp() {
                 }
 
                 dbLocations[row.Loc_ID.trim()] = {
-                    name: row.Loc_Name ? row.Loc_Name.trim() : "Unknown Location",
+                    name: row.Loc_Name ? row.Loc_Name.trim() : "To Be Determined",
                     town: row.Loc_Town ? row.Loc_Town.trim() : "Unknown",
                     latitude: lat,
                     longitude: long,
