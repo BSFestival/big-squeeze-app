@@ -32,6 +32,8 @@
 /* ==========================================================================
    2. BASE RESETS & TYPOGRAPHY
    ========================================================================== */
+-webkit-tap-highlight-color: transparent;
+
 body { 
   font-family: Arial, sans-serif; 
   margin: 0; 
