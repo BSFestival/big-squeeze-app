@@ -144,6 +144,7 @@ async function initDatabaseApp() {
          
                  dbLocations[row.Loc_ID.trim()] = {
                      name: row.Loc_Name ? row.Loc_Name.trim() : "Unknown Location",
+                     town: row.Loc_Town ? row.Loc_Town.trim() " "",
                      latitude: lat,
                      longitude: long,
                      zoom: zoom,
@@ -176,6 +177,7 @@ async function initDatabaseApp() {
                 end: row.Event_End ? row.Event_End.trim() : "",
                 thumbnail: row.Event_Thumbnail ? row.Event_Thumbnail.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
+                town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#",
                 dname: dbDetails[DtlId]?.name || "",
                 image: dbDetails[DtlId]?.image || "",
@@ -192,6 +194,7 @@ async function initDatabaseApp() {
                 start: row.Stand_Start ? row.Stand_Start.trim() : "",
                 end: row.Stand_End ? row.Stand_End.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
+                town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
             };
         });
@@ -219,6 +222,7 @@ async function initDatabaseApp() {
                 content: processedContent,
                 image: row.Amenity_Image ? row.Amenity_Image.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
+                town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
             };
         });
