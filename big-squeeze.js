@@ -277,17 +277,37 @@ function processAllSchedules() {
     renderCards(sortedStands, "all-stands", `No lemonade stands found in ${selectedTownFilter}.`, false);
 }
 
-// Town Filter Handler
-function filterStandsByTown(townName, event) {
+// Map numeric slider values (0, 1, 2) to town state strings
+const TOWN_SLIDER_MAP = {
+    "0": "Parsons",
+    "1": "ALL",
+    "2": "Decaturville"
+};
+
+// Handles dragging or tapping the range slider track
+function handleTownSliderChange(val) {
+    const townName = TOWN_SLIDER_MAP[val] || "ALL";
     selectedTownFilter = townName;
 
-    // Update active button state
-    document.querySelectorAll('.town-btn').forEach(btn => btn.classList.remove('active'));
-    if (event && event.target) {
-        event.target.classList.add('active');
-    }
+    // Update label active highlights
+    const labelParsons = document.getElementById("label-parsons");
+    const labelAll = document.getElementById("label-all");
+    const labelDecaturville = document.getElementById("label-decaturville");
+
+    if (labelParsons) labelParsons.classList.toggle("active", val === "0" || val === 0);
+    if (labelAll) labelAll.classList.toggle("active", val === "1" || val === 1);
+    if (labelDecaturville) labelDecaturville.classList.toggle("active", val === "2" || val === 2);
 
     processAllSchedules();
+}
+
+// Helper to snap slider position if user taps directly on a text label
+function setTownSlider(val) {
+    const slider = document.getElementById("town-range-slider");
+    if (slider) {
+        slider.value = val;
+        handleTownSliderChange(val);
+    }
 }
 
 /* ==========================================================================
