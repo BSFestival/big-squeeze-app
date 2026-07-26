@@ -204,13 +204,27 @@ button,
 }
 
 /* Slider Position Labels */
+/* Precise 3-Column Grid for Town Slider Labels */
 .town-slider-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 equal sections matching the slider track */
+  font-size: 0.85em;
   font-weight: bold;
   color: var(--day-inactive);
   padding: 0 4px;
+}
+
+/* Align Left label to the start, Center label dead center, Right label to the end */
+#label-parsons {
+  text-align: left;
+}
+
+#label-all {
+  text-align: center;
+}
+
+#label-decaturville {
+  text-align: right;
 }
 
 .town-slider-labels span {
@@ -221,7 +235,7 @@ button,
 
 .town-slider-labels span.active {
   color: var(--bold-green);
-  font-size: 1em;
+  font-size: 0.95em;
 }
 
 /* Custom Styled Range Input */
@@ -233,7 +247,8 @@ button,
   border-radius: 12px;
   background: var(--faint-yellow);
   border: 2px solid var(--soft-green);
-  margin: 4px 0;
+  margin: 6px 0 2px 0;
+  box-sizing: border-box;
 }
 
 /* Slider Track Thumb (iOS / Chrome / Safari) */
