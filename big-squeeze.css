@@ -208,27 +208,24 @@ button,
 .town-slider-labels {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr; /* 3 equal sections matching the slider track */
+  align-items: baseline;   
   font-size: 1em;
   font-weight: bold;
   color: var(--day-inactive);
-  align-items: baseline;
   padding: 0 4px;
 }
 
 /* Align Left label to the start, Center label dead center, Right label to the end */
 #label-parsons {
   text-align: left;
-  align-items: baseline;
 }
 
 #label-all {
   text-align: center;
-  align-items: baseline;
 }
 
 #label-decaturville {
   text-align: right;
-  align-items: baseline;
 }
 
 .town-slider-labels span {
