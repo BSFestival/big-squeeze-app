@@ -270,7 +270,7 @@ button,
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   /* transition: transform 0.1s ease; */
-  transition: transform 0.5s cubic-bezier(0.78, 0, 0.22, 1);
+  transition: transform 0.75s cubic-bezier(0.78, 0, 0.22, 1);
 }
 
 #town-range-slider::-webkit-slider-thumb:active {
