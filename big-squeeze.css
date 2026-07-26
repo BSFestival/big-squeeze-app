@@ -185,37 +185,86 @@ button,
   color: var(--day-active); 
 }
 
-/* Town Filter Bar for Stands Screen */
+/* Sticky Town Range Slider Container */
 .town-filter-container {
   position: sticky;
   top: 0;
-  background-color: var(--pale-yellow); /* Matches body background so cards slide under cleanly */
-  z-index: 20;                          /* Keeps buttons above scrolling card shadows */
-  padding-top: 10px;
-  padding-bottom: 10px;
-  display: flex;
-  gap: 8px;
+  background-color: var(--pale-yellow);
+  z-index: 20;
+  padding: 10px 15px;
   width: 100%;
   box-sizing: border-box;
 }
 
-.town-btn {
-  flex: 1;
-  background: var(--soft-green);
-  color: var(--day-inactive);
-  border: none;
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 1.2em;
-  transition: background 0.2s, color 0.2s;
+.town-slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
 }
 
-.town-btn.active {
-  background: var(--bold-green);
-  color: var(--day-active);
+/* Slider Position Labels */
+.town-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85em;
+  font-weight: bold;
+  color: var(--day-inactive);
+  padding: 0 4px;
 }
+
+.town-slider-labels span {
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.town-slider-labels span.active {
+  color: var(--bold-green);
+  font-size: 1em;
+}
+
+/* Custom Styled Range Input */
+#town-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--faint-green);
+  outline: none;
+  margin: 4px 0;
+}
+
+/* Slider Track Thumb (iOS / Chrome / Safari) */
+#town-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bold-green);
+  border: 2px solid var(--bs-white);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+#town-range-slider::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+}
+
+/* Slider Track Thumb (Firefox) */
+#town-range-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bold-green);
+  border: 2px solid var(--bs-white);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
 /* Bottom Persistent Tab Bar */
 .bottom-nav { 
   position: fixed; 
