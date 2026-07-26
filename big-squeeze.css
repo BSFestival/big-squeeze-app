@@ -208,7 +208,7 @@ button,
 .town-slider-labels {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr; /* 3 equal sections matching the slider track */
-  font-size: 1em;
+  font-size: 1.25em;
   font-weight: bold;
   color: var(--day-inactive);
   padding: 0 4px;
@@ -235,7 +235,7 @@ button,
 
 .town-slider-labels span.active {
   color: var(--bold-green);
-  font-size: 1em;
+  font-size: 1.5em;
 }
 
 /* Custom Styled Range Input */
