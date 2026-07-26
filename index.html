@@ -49,11 +49,25 @@
         <div id="stands-screen" class="tab-content hidden">
             <h2><span id="stands-header-title">Lemonade Stands</span></h2>
             <div id="lemmy-lemonade" class="character-r"><img src="./images/character/lemmy-lemonade-512.webp" width="25%" alt="" /></div>
-            <!-- Stands Screen Town Filter Buttons -->
+            <!-- Sticky Town Slider Filter -->
             <div class="town-filter-container">
-                <button onclick="filterStandsByTown('ALL', event)" class="town-btn active">All</button>
-                <button onclick="filterStandsByTown('Parsons', event)" class="town-btn">Parsons</button>
-                <button onclick="filterStandsByTown('Decaturville', event)" class="town-btn">Decaturville</button>
+                <div class="town-slider-wrapper">
+                    <div class="town-slider-labels">
+                        <span id="label-parsons" onclick="setTownSlider(0)">Parsons</span>
+                        <span id="label-all" class="active" onclick="setTownSlider(1)">All</span>
+                        <span id="label-decaturville" onclick="setTownSlider(2)">Decaturville</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="town-range-slider" 
+                        min="0" 
+                        max="2" 
+                        step="1" 
+                        value="1" 
+                        oninput="handleTownSliderChange(this.value)"
+                        aria-label="Filter stands by town"
+                    />
+                </div>
             </div>
             <div id="all-stands"><div class="spinner"><img class="spin-img" src="images/lemon-slice.webp" width="96px" alt="" /></div><div class="load-text">Loading data...</div></div>
         </div>
