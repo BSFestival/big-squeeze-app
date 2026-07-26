@@ -211,6 +211,7 @@ button,
   font-size: 1em;
   font-weight: bold;
   color: var(--day-inactive);
+  align-items: baseline;
   padding: 0 4px;
 }
 
