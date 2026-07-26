@@ -208,7 +208,7 @@ button,
 .town-slider-labels {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr; /* 3 equal sections matching the slider track */
-  font-size: 0.85em;
+  font-size: 1em;
   font-weight: bold;
   color: var(--day-inactive);
   padding: 0 4px;
@@ -235,7 +235,7 @@ button,
 
 .town-slider-labels span.active {
   color: var(--bold-green);
-  font-size: 0.95em;
+  font-size: 1em;
 }
 
 /* Custom Styled Range Input */
@@ -258,7 +258,7 @@ button,
   /* width: 24px;
   height: 24px;
   border-radius: 50%; */
-  width: 24px;
+  width: 18px;
   height: 40px;
   border-radius: 12px;
   background: var(--bold-green);
@@ -277,7 +277,7 @@ button,
   /* width: 24px;
   height: 24px;
   border-radius: 50%; */
-  width: 24px;
+  width: 18px;
   height: 40px;
   border-radius: 12px; 
   background: var(--bold-green);
