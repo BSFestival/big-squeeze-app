@@ -229,7 +229,7 @@ button,
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 24px;
+  height: 20px;
   border-radius: 12px;
   background: var(--faint-yellow);
   border: 2px solid var(--soft-green);
@@ -247,7 +247,7 @@ button,
   height: 40px;
   border-radius: 12px;
   background: var(--bold-green);
-  border: 2px solid var(--bold-yellow);
+  border: 2px solid var(--soft-green);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: transform 0.1s ease;
@@ -266,7 +266,7 @@ button,
   height: 40px;
   border-radius: 12px; 
   background: var(--bold-green);
-  border: 2px solid var(--bold-yellow);
+  border: 2px solid var(--soft-green);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
