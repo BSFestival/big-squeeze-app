@@ -8,6 +8,7 @@ const URL_DETAILS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h
 const URL_PARAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=218585894&single=true&output=csv";    
 const URL_NEWS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=2012752905&single=true&output=csv";
 const URL_AMENITIES = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=295020352&single=true&output=csv";
+const URL_FOOD = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=1305304181&single=true&output=csv";
 
 /* ==========================================================================
    2. GLOBAL STATE & DATABASE STORES
@@ -19,6 +20,7 @@ let dbDetails = {};
 let dbParams = [];
 let dbNews = [];
 let dbAmenities = [];
+let dbFood = [];
 let selectedDayString = ""; 
 let selectedTownFilter = "ALL"; // State tracker for town filter
 let scheduleRefreshTimer = null;
@@ -40,14 +42,15 @@ function fetchAndParseCsv(url) {
 
 async function initDatabaseApp() {
     try {
-        const [rawLocations, rawDetails, rawEvents, rawStands, rawParams, rawNews, rawAmenities] = await Promise.all([
+        const [rawLocations, rawDetails, rawEvents, rawStands, rawParams, rawNews, rawAmenities, rawFood] = await Promise.all([
             fetchAndParseCsv(URL_LOCATIONS),
             fetchAndParseCsv(URL_DETAILS),
             fetchAndParseCsv(URL_EVENTS),
             fetchAndParseCsv(URL_STANDS),
             fetchAndParseCsv(URL_PARAMS),
             fetchAndParseCsv(URL_NEWS),
-            fetchAndParseCsv(URL_AMENITIES)
+            fetchAndParseCsv(URL_AMENITIES),
+            fetchAndParseCsv(URL_FOOD)
         ]);
 
         // Load parameters from database
@@ -220,7 +223,19 @@ async function initDatabaseApp() {
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
             };
         });
-        
+
+        dbFood = rawFood.map(row => {
+            let processedContent = row.Food_Desc ? row.Food_Desc.trim() : "";
+            processedContent = processedContent.replace(/\n/g, "<br>"); 
+
+            return {
+                name: row.Food_Name ? row.Food_Name.trim() : "",
+                descrip: processedContent,
+                image: row.Food_Image ? row.Food_Image.trim() : "",
+                imageLoc: row.Food_Img_Loc ? row.Food_Img_Loc.trim().toUpperCase() : "L"
+            };
+        });
+
         // Initial Render Execution
         processAllSchedules();
         renderNewsFeed();
