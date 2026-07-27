@@ -502,7 +502,25 @@ function renderAmenities() {
     const amenitiesContainer = document.getElementById("all-amenities");
     if (!amenitiesContainer) return;
 
-    renderCards(dbAmenities, "all-amenities", "No amenities posted yet.", false);
+    /* renderCards(dbAmenities, "all-amenities", "No amenities posted yet.", false); */
+
+   if (dbAmenities.length === 0) {
+        amenitiesContainer.innerHTML = `<p class="no-events">No amenities posted yet.</p>`;
+        return;
+    }
+
+   const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
+        const imageHtml = item.image 
+            ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
+            : "";
+
+        amenitiesContainer.innerHTML += `
+            <div class="card news-card">
+                <div class="card-title news-card-title">${item.name}</div>
+                ${imageHtml}
+                <p class="dtl-desc news-card-desc">${item.descrip}</p>
+            </div>`;
+    };
 }
 
 /* ==========================================================================
