@@ -512,17 +512,17 @@ function renderAmenities() {
    const sortedAmenities = [...dbAmenities].sort((a, b) => a.title.localeCompare(b.title));
 
    sortedAmenities.forEach(item => {
-      const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
-           const imageHtml = item.image 
-               ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
-               : "";
-   
-           amenitiesContainer.innerHTML += `
-               <div class="card news-card">
-                   <div class="card-title news-card-title">${item.name}</div>
-                   ${imageHtml}
-                   <p class="dtl-desc news-card-desc">${item.descrip}</p>
-               </div>`;
+     const alignmentClass = "R";
+     const imageHtml = item.image 
+         ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
+         : "";
+
+     amenitiesContainer.innerHTML += `
+         <div class="card news-card">
+             <div class="card-title news-card-title">${item.title}</div>
+             ${imageHtml}
+             <p class="dtl-desc news-card-desc">${item.content}</p>
+         </div>`;
     });
 }
 
