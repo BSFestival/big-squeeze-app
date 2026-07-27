@@ -711,7 +711,7 @@ button,
   opacity: 0 !important;
 }
 .highlight-shadow-box { 
-  border: 1.5px solid; 
+  border: 1px solid; 
   border-top-color: var(--card-hlight); 
   border-left-color: var(--card-hlight); 
   border-right-color: var(--card-shadow); 
