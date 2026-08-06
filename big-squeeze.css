@@ -2,31 +2,27 @@
    1. VARIABLES & DESIGN TOKENS
    ========================================================================== */
 :root {
-  /* Brand Greens */
-  --bold-green: #036838;
-  --soft-green: #8dc73e;
-  --pale-green: #cef29d;
-  --faint-green: #a4c774;   
+  /* Primary Greens */
+  --avocado: #036838;
+  --lime: #8dc73e;
+  --mint: #bce283;
+  --pistachio: #e3f4cd;
 
-  /* Brand Yellows */
-  --bold-yellow: #ffde13;
-  --soft-yellow: #fff300;
-  --pale-yellow: #fae980;
-  --faint-yellow: #f9f497;
+  /* Secondary Yellows */
+  --mango: #ffde13;
+  --lemon: #fff300;
+  --banana: #fff799;
+  --cream: #fffcd2;
 
-  /* UI & Accents */
-  --accent-blue: #0454bf;
-  --text-color: #333;
-  --accent-text: #e67e22;   
-  --title-color: #2c3e50;
-  --day-active: #fff;
-  --day-inactive: #5a5a5a;
-  --card-hlight: #fff;   
-  --card-shadow: #b0b0b0;
-  --bs-white: #fff;
-  --bs-offwhite: #f1f1f1;
-  --bs-black: #000;
-  --bs-gray: #333;
+  /* Accents */
+  --chicory: #1c7cd5;
+  --habanero: #ff5a36;
+
+  /* Neutrals */
+  ---salt: #ffffff;
+  --cardamom: #d4dad1;
+  --thyme: #5c635b;
+  --pepper: #000000;   
 }
 
 /* ==========================================================================
@@ -36,28 +32,28 @@ body {
   font-family: Arial, sans-serif; 
   margin: 0; 
   padding: 0; 
-  background: var(--pale-yellow); 
-  color: var(--text-color); 
+  background: var(--banana); 
+  color: var(--thyme); 
   overflow-y: auto; 
 }
 
 h1 { 
   text-align: center; 
-  color: var(--bold-green); 
+  color: var(--avocado); 
   margin: 15px 0 5px 0; 
   font-size: 2.2em; 
 }
 
 h2 { 
-  color: var(--bold-green); 
+  color: var(--avocado); 
   font-size: 1.5em; 
-  border-bottom: 2px solid var(--bold-green); 
+  border-bottom: 2px solid var(--avocado); 
   padding-bottom: 5px; 
   margin-top: 20px; 
 }
 
 .hero-text { 
-  color: var(--bold-green); 
+  color: var(--avocado); 
   font-family: "Luckiest Guy", cursive; 
   font-weight: 400; 
   font-style: normal; 
@@ -157,7 +153,7 @@ button,
 .day-filter-container { 
   position: sticky; 
   top: 0; 
-  background-color: var(--pale-yellow); 
+  background-color: var(--banana); 
   z-index: 20; 
   padding-top: 10px; 
   padding-bottom: 10px; 
@@ -170,8 +166,8 @@ button,
 .day-filter-container .day-btn { flex: 1; }
 
 .day-btn { 
-  background: var(--soft-green); 
-  color: var(--day-inactive); 
+  background: var(--lime); 
+  color: var(--cardamom); 
   border: none; 
   padding: 12px; 
   border-radius: 5px; 
@@ -182,15 +178,15 @@ button,
 }
 
 .day-btn.active { 
-  background: var(--bold-green); 
-  color: var(--day-active); 
+  background: var(--avocado); 
+  color: var(--salt); 
 }
 
 /* Sticky Town Range Slider Container */
 .town-filter-container {
   position: sticky;
   top: 0;
-  background-color: var(--pale-yellow);
+  background-color: var(--banana);
   z-index: 20;
   padding: 10px 15px;
   width: 100%;
@@ -212,7 +208,7 @@ button,
   align-items: baseline;   
   font-size: 1em;
   font-weight: bold;
-  color: var(--day-inactive);
+  color: var(--cardamom);
   padding: 0 4px;
 }
 
@@ -236,7 +232,7 @@ button,
 }
 
 .town-slider-labels span.active {
-  color: var(--bold-green);
+  color: var(--avocado);
   font-size: 1.25em;
 }
 
@@ -247,8 +243,8 @@ button,
   width: 100%;
   height: 20px;
   border-radius: 12px;
-  background: var(--faint-yellow);
-  border: 2px solid var(--soft-green);
+  background: var(--cream);
+  border: 2px solid var(--lime);
   margin: 6px 0 2px 0;
   box-sizing: border-box;
 }
@@ -263,8 +259,8 @@ button,
   width: 18px;
   height: 40px;
   border-radius: 12px;
-  background: var(--bold-green);
-  border: 2px solid var(--soft-green);
+  background: var(--avocado);
+  border: 2px solid var(--lime);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   /* transition: transform 0.1s ease; */
@@ -283,8 +279,8 @@ button,
   width: 18px;
   height: 40px;
   border-radius: 12px; 
-  background: var(--bold-green);
-  border: 2px solid var(--soft-green);
+  background: var(--avocado);
+  border: 2px solid var(--lime);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
@@ -297,7 +293,7 @@ button,
   right: 0; 
   height: 60px; 
   width: 100%; 
-  background: var(--bs-white); 
+  background: var(----salt); 
   display: flex; 
   box-shadow: 0 -2px 10px rgba(0,0,0,0.1); 
   z-index: 1000; 
@@ -313,14 +309,14 @@ button,
   align-items: center; 
   justify-content: center; 
   text-decoration: none; 
-  color: var(--text-color); 
+  color: var(--thyme); 
   font-size: 0.75em; 
   font-weight: bold; 
   cursor: pointer; 
   user-select: none; 
 }
 
-.tab-link.active { color: var(--accent-blue); }
+.tab-link.active { color: var(--chicory); }
 .tab-icon { font-size: 1.4em; margin-bottom: 2px; }
 
 /* Sliding Indicator Bar */
@@ -330,7 +326,7 @@ button,
   left: 0; 
   height: 4px; 
   width: 20%; 
-  background-color: var(--bold-green); 
+  background-color: var(--avocado); 
   border-top-left-radius: 4px; 
   border-top-right-radius: 4px; 
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
@@ -340,10 +336,10 @@ button,
    5. CARD SYSTEM & CONTENT LAYOUTS
    ========================================================================== */
 .card { 
-  background: var(--pale-green); 
+  background: var(--mint); 
   padding: 15px; 
   margin: 10px 0; 
-  border: 1.5px solid var(--bold-green); 
+  border: 1.5px solid var(--avocado); 
   border-radius: 16px; 
   box-shadow: 0 4px 8px rgba(0,0,0,0.12); 
 }
@@ -352,12 +348,12 @@ button,
   font-size: 1.2em; 
   font-weight: bold; 
   margin: 5px 0; 
-  color: var(--title-color); 
+  color: var(--thyme); 
 }
 
 .time { 
   font-weight: bold; 
-  color: var(--accent-text); 
+  color: var(--habanero); 
   font-size: 1.1em; 
 }
 
@@ -424,7 +420,7 @@ button,
 }
 
 .news-card { 
-  background-color: var(--pale-yellow); 
+  background-color: var(--banana); 
   border-style: none; 
   box-shadow: none; 
 }
@@ -450,8 +446,8 @@ button,
    ========================================================================== */
 .btn { 
   display: inline-block; 
-  background: var(--faint-yellow); 
-  color: var(--bs-white); 
+  background: var(--cream); 
+  color: var(----salt); 
   padding: 8px 12px; 
   text-decoration: none; 
   border-radius: 2px; 
@@ -465,13 +461,13 @@ button,
   display: inline-flex; 
   align-items: center; 
   justify-content: center; 
-  background: var(--faint-yellow); 
+  background: var(--cream); 
   width: 64px; 
   height: 64px; 
   box-sizing: border-box; 
   border-radius: 50%; 
   text-decoration: none; 
-  border: 1px outset var(--bold-green); 
+  border: 1px outset var(--avocado); 
   margin-top: 10px; 
   cursor: pointer; 
   padding: 0; 
@@ -490,7 +486,7 @@ button,
   position: absolute; 
   width: 24px; 
   height: 4px; 
-  background-color: var(--accent-blue); 
+  background-color: var(--chicory); 
   border-radius: 2px; 
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
 }
@@ -533,7 +529,7 @@ button,
 
 .dtl-desc { 
   line-height: 1.5; 
-  color: var(--text-color); 
+  color: var(--thyme); 
   margin-top: 12px; 
   font-size: 1.1em; 
   white-space: pre-wrap; 
@@ -550,12 +546,12 @@ button,
   position: absolute; 
   bottom: 110%; 
   right: 0; 
-  background-color: var(--pale-yellow); 
-  color: var(--bs-black); 
+  background-color: var(--banana); 
+  color: var(--pepper); 
   font-size: 1em;
   min-width: 160px; 
   box-shadow: 0px 4px 8px rgba(0,0,0,0.2); 
-  border: 1.5px solid var(--bold-green); 
+  border: 1.5px solid var(--avocado); 
   border-radius: 8px; 
   z-index: 20; 
   padding: 5px 0; 
@@ -564,7 +560,7 @@ button,
 .reminder-menu button { 
   background: none; 
   border: none; 
-  color: var(--bs-gray); 
+  color: var(--thyme); 
   padding: 10px 15px; 
   text-align: left; 
   width: 100%; 
@@ -583,16 +579,16 @@ button,
 .reminder-menu .menu-back-btn {
     font-size: 1em;
     font-weight: bold;
-    color: var(--accent-text);
+    color: var(--habanero);
     border-bottom: 1px solid #eee;
     padding: 6px 15px;
 }
 
 .reminder-menu .menu-back-btn:hover {
-    background-color: var(--faint-yellow);
+    background-color: var(--cream);
 }
 
-.reminder-menu button:hover { background-color: var(--faint-yellow); }
+.reminder-menu button:hover { background-color: var(--cream); }
 .reminder-menu.show { display: block; }
 
 /* ==========================================================================
@@ -701,7 +697,7 @@ button,
 .right { text-align: right; }
 .no-border { border-style: none; padding-bottom: 0; }
 .dtl-btn { padding-right: 20px; }
-.no-events { text-align: center; color: var(--text-color); font-style: italic; padding: 20px; }
+.no-events { text-align: center; color: var(--thyme); font-style: italic; padding: 20px; }
 
 /* Force hide all hidden utilities and active overlays */
 .hidden, 
@@ -713,10 +709,10 @@ button,
 }
 .highlight-shadow-box { 
   border: 1px solid; 
-  border-top-color: var(--card-hlight); 
-  border-left-color: var(--card-hlight); 
-  border-right-color: var(--card-shadow); 
-  border-bottom-color: var(--card-shadow); 
+  border-top-color: var(--salt); 
+  border-left-color: var(--salt); 
+  border-right-color: var(--cardamom); 
+  border-bottom-color: var(--cardamom); 
 }
 
 /* Loading Spinner */
@@ -742,7 +738,7 @@ button,
   justify-content: center; 
   align-items: center; 
   padding: 30px; 
-  color: var(--text-color);
+  color: var(--thyme);
   font-size: 1em;
   font-weight: bold;
   text-align: center;
