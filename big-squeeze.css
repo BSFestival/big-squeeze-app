@@ -166,7 +166,7 @@ button,
 .day-filter-container .day-btn { flex: 1; }
 
 .day-btn { 
-  background: var(--lime); 
+  background: var(--avocado); 
   color: var(--cardamom); 
   border: none; 
   padding: 12px; 
@@ -178,7 +178,7 @@ button,
 }
 
 .day-btn.active { 
-  background: var(--avocado); 
+  background: var(--lime); 
   color: var(--salt); 
 }
 
