@@ -287,7 +287,7 @@ function processAllSchedules() {
     if (standsHeader) {
         const countLabel = selectedTownFilter === "ALL" 
             ? `${sortedStands.length} Lemonade Stands` 
-            : `${sortedStands.length} Stands in ${selectedTownFilter}`;
+            : `${sortedStands.length}  Lemonade Stands`;
         standsHeader.innerText = countLabel;
     }
     
