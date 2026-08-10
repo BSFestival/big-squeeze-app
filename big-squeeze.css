@@ -443,7 +443,7 @@ button,
 .day-btn { 
   background: var(--avocado); 
   color: color-mix(in srgb, var(--cardamom) 50%, var(--thyme)); 
-  border: none; 
+  border: 1px solid var(--avocado); 
   padding: 12px; 
   border-radius: 5px; 
   font-weight: bold; 
@@ -454,7 +454,8 @@ button,
 
 .day-btn.active { 
   background: var(--lime); 
-  color: var(--salt); 
+  color: var(--salt);
+  border: 1px solid var(--mint);
 }
 
 /* Sticky Town Range Slider Container */
