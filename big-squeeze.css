@@ -475,7 +475,7 @@ button,
   align-items: baseline;   
   font-size: 1em;
   font-weight: bold;
-  color: color-mix(in srgb, var(--cardamom) 50%, var(--thyme));
+  color: color-mix(in srgb, var(--cardamom) 30%, var(--thyme));
   padding: 0 4px;
 }
 
