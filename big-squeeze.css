@@ -120,7 +120,7 @@ button,
   max-width: 600px; 
   margin: auto; 
   padding: 15px; 
-  padding-bottom: 80px; 
+  padding-bottom: 110px; 
   height: auto; 
   display: flex; 
   flex-direction: column; 
@@ -178,40 +178,65 @@ button,
 /* ==========================================================================
    4. NAVIGATION COMPONENTS
    ========================================================================== */
-/* Bottom Persistent Tab Bar */
+/* Floating Modern Bar */
 .bottom-nav { 
   position: fixed; 
-  bottom: 0; 
+  /* 1. Lift off bottom and center using margin auto */
+  bottom: 20px; 
   left: 0; 
   right: 0; 
-  height: 60px; 
-  width: 100%; 
-  background: var(--salt); 
+  margin: 0 auto;
+  
+  /* 2. Constrain width so it floats inside mobile/desktop screen bounds */
+  width: calc(100% - 32px); 
+  max-width: 500px; 
+  height: 64px; 
+
+  /* 3. Frosted Glass (Glassmorphism) Background */
+  background: color-mix(in srgb, var(--salt) 75%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+
+  /* 4. Rounded pill shape + modern drop shadow */
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 
+              0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
   display: flex; 
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1); 
   z-index: 1000; 
-  justify-content: space-around; 
+  justify-space-around: space-around; 
   align-items: center; 
+  overflow: hidden; /* Clips children (like sliding indicator) inside pill radius */
+
+  /* Safe Area handling for modern mobile devices (iPhone home indicator) */
+  margin-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .tab-link { 
   flex: 1; 
+  height: 100%;
   display: flex; 
   flex-direction: column; 
   align-items: center; 
   justify-content: center; 
   text-decoration: none; 
   color: var(--thyme); 
-  /*font-size: 0.75em; 
-  font-weight: bold;*/
   cursor: pointer; 
   user-select: none; 
+  transition: color 0.2s ease;
 }
 
-.tab-link.active { color: var(--chicory); }
-.tab-icon { font-size: 1.4em; margin-bottom: 2px; }
+.tab-link.active { 
+  color: var(--chicory); 
+}
 
-/* Sliding Indicator Bar */
+.tab-icon { 
+  font-size: 1.4em; 
+  margin-bottom: 2px; 
+}
+
+/* Sliding Indicator Bar Adjusted for Floating Pill Design */
 #nav-indicator { 
   position: absolute; 
   bottom: 0; 
