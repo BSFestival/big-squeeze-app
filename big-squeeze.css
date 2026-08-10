@@ -28,6 +28,14 @@
 /* ==========================================================================
    2. BASE RESETS & TYPOGRAPHY
    ========================================================================== */
+html {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
 body { 
   font-family: Arial, sans-serif; 
   margin: 0; 
@@ -62,11 +70,26 @@ h2 {
   margin-top: 20px; 
 }
 
+.load-text {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  padding: 30px; 
+  color: var(--thyme);
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+}
+
 .luckiest-guy-regular { 
   font-family: "Luckiest Guy", cursive; 
   font-weight: 400; 
   font-style: normal; 
 }
+
+.center { text-align: center; }
+.left { text-align: left; }
+.right { text-align: right; }
 
 /* ==========================================================================
    NATIVE APP-LIKE TOUCH & SELECTION RESETS
@@ -101,7 +124,6 @@ button,
   height: auto; 
   display: flex; 
   flex-direction: column; 
-  box-sizing: border-box; 
 }
 
 .tab-content { 
@@ -111,7 +133,6 @@ button,
   height: auto; 
   overflow-y: visible; 
   padding-bottom: 20px; 
-  box-sizing: border-box; 
 }
 
 /* Ensure tab contents hide cleanly when inactive */
@@ -146,145 +167,17 @@ button,
   position: relative; 
 }
 
+.highlight-shadow-box { 
+  border: 1px solid; 
+  border-top-color: var(--salt); 
+  border-left-color: var(--salt); 
+  border-right-color: var(--cardamom); 
+  border-bottom-color: var(--cardamom); 
+}
+
 /* ==========================================================================
    4. NAVIGATION COMPONENTS
    ========================================================================== */
-/* Day Switcher Bar */
-.day-filter-container { 
-  position: sticky; 
-  top: 0; 
-  background-color: var(--banana); 
-  z-index: 20; 
-  padding-top: 10px; 
-  padding-bottom: 10px; 
-  display: flex; 
-  gap: 10px; 
-  width: 100%; 
-  box-sizing: border-box; 
-}
-
-.day-filter-container .day-btn { flex: 1; }
-
-.day-btn { 
-  background: var(--avocado); 
-  color: var(--cardamom); 
-  border: none; 
-  padding: 12px; 
-  border-radius: 5px; 
-  font-weight: bold; 
-  cursor: pointer; 
-  font-size: 1.2em; 
-  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
-}
-
-.day-btn.active { 
-  background: var(--lime); 
-  color: var(--salt); 
-}
-
-/* Sticky Town Range Slider Container */
-.town-filter-container {
-  position: sticky;
-  top: 0;
-  background-color: var(--banana);
-  z-index: 20;
-  padding: 10px 15px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.town-slider-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
-}
-
-/* Slider Position Labels */
-/* Precise 3-Column Grid for Town Slider Labels */
-.town-slider-labels {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* 3 equal sections matching the slider track */
-  align-items: baseline;   
-  font-size: 1em;
-  font-weight: bold;
-  color: var(--cardamom);
-  padding: 0 4px;
-}
-
-/* Align Left label to the start, Center label dead center, Right label to the end */
-#label-parsons {
-  text-align: left;
-}
-
-#label-all {
-  text-align: center;
-}
-
-#label-decaturville {
-  text-align: right;
-}
-
-.town-slider-labels span {
-  cursor: pointer;
-  transition: color 0.2s ease, transform 0.2s ease;
-  user-select: none;
-}
-
-.town-slider-labels span.active {
-  color: var(--avocado);
-  font-size: 1.25em;
-}
-
-/* Custom Styled Range Input */
-#town-range-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 20px;
-  border-radius: 12px;
-  background: var(--cream);
-  border: 2px solid var(--lime);
-  margin: 6px 0 2px 0;
-  box-sizing: border-box;
-}
-
-/* Slider Track Thumb (iOS / Chrome / Safari) */
-#town-range-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  /* width: 24px;
-  height: 24px;
-  border-radius: 50%; */
-  width: 18px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--avocado);
-  border: 2px solid var(--lime);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  /* transition: transform 0.1s ease; */
-  transition: transform 0.75s cubic-bezier(0.78, 0, 0.22, 1);
-}
-
-#town-range-slider::-webkit-slider-thumb:active {
-  transform: scale(1.15);
-}
-
-/* Slider Track Thumb (Firefox) */
-#town-range-slider::-moz-range-thumb {
-  /* width: 24px;
-  height: 24px;
-  border-radius: 50%; */
-  width: 18px;
-  height: 40px;
-  border-radius: 12px; 
-  background: var(--avocado);
-  border: 2px solid var(--lime);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
-
 /* Bottom Persistent Tab Bar */
 .bottom-nav { 
   position: fixed; 
@@ -293,13 +186,12 @@ button,
   right: 0; 
   height: 60px; 
   width: 100%; 
-  background: var(---salt); 
+  background: var(--salt); 
   display: flex; 
   box-shadow: 0 -2px 10px rgba(0,0,0,0.1); 
   z-index: 1000; 
   justify-content: space-around; 
   align-items: center; 
-  box-sizing: border-box; 
 }
 
 .tab-link { 
@@ -408,7 +300,6 @@ button,
   margin-top: 12px; 
   justify-content: flex-end; 
   width: 100%; 
-  box-sizing: border-box; 
 }
 
 .ca-inline { 
@@ -447,7 +338,7 @@ button,
 .btn { 
   display: inline-block; 
   background: var(--cream); 
-  color: var(---salt); 
+  color: var(--salt); 
   padding: 8px 12px; 
   text-decoration: none; 
   border-radius: 2px; 
@@ -464,7 +355,6 @@ button,
   background: var(--cream); 
   width: 64px; 
   height: 64px; 
-  box-sizing: border-box; 
   border-radius: 50%; 
   text-decoration: none; 
   border: 1px outset var(--avocado); 
@@ -494,6 +384,140 @@ button,
 .plus-btn::before { transform: rotate(0deg); } /* Horizontal */
 .plus-btn::after { transform: rotate(90deg); }  /* Vertical */
 .plus-btn.active::after { transform: rotate(180deg); } /* Rotates to minus */
+
+/* Day Switcher Bar */
+.day-filter-container { 
+  position: sticky; 
+  top: 0; 
+  background-color: var(--banana); 
+  z-index: 20; 
+  padding-top: 10px; 
+  padding-bottom: 10px; 
+  display: flex; 
+  gap: 10px; 
+  width: 100%; 
+}
+
+.day-filter-container .day-btn { flex: 1; }
+
+.day-btn { 
+  background: var(--avocado); 
+  color: var(--cardamom); 
+  border: none; 
+  padding: 12px; 
+  border-radius: 5px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  font-size: 1.2em; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+}
+
+.day-btn.active { 
+  background: var(--lime); 
+  color: var(--salt); 
+}
+
+/* Sticky Town Range Slider Container */
+.town-filter-container {
+  position: sticky;
+  top: 0;
+  background-color: var(--banana);
+  z-index: 20;
+  padding: 10px 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.town-slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+/* Slider Position Labels */
+/* Precise 3-Column Grid for Town Slider Labels */
+.town-slider-labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 equal sections matching the slider track */
+  align-items: baseline;   
+  font-size: 1em;
+  font-weight: bold;
+  color: var(--cardamom);
+  padding: 0 4px;
+}
+
+/* Align Left label to the start, Center label dead center, Right label to the end */
+#label-parsons {
+  text-align: left;
+}
+
+#label-all {
+  text-align: center;
+}
+
+#label-decaturville {
+  text-align: right;
+}
+
+.town-slider-labels span {
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.town-slider-labels span.active {
+  color: var(--avocado);
+  font-size: 1.25em;
+}
+
+/* Custom Styled Range Input */
+#town-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 20px;
+  border-radius: 12px;
+  background: var(--cream);
+  border: 2px solid var(--lime);
+  margin: 6px 0 2px 0;
+  box-sizing: border-box;
+}
+
+/* Slider Track Thumb (iOS / Chrome / Safari) */
+#town-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  /* width: 24px;
+  height: 24px;
+  border-radius: 50%; */
+  width: 18px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--avocado);
+  border: 2px solid var(--lime);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.75s cubic-bezier(0.78, 0, 0.22, 1);
+}
+
+#town-range-slider::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+}
+
+/* Slider Track Thumb (Firefox) */
+#town-range-slider::-moz-range-thumb {
+  /* width: 24px;
+  height: 24px;
+  border-radius: 50%; */
+  width: 18px;
+  height: 40px;
+  border-radius: 12px; 
+  background: var(--avocado);
+  border: 2px solid var(--lime);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
 
 /* ==========================================================================
    7. OVERLAYS & DRAWERS (Dropdowns & Expandables)
@@ -692,9 +716,7 @@ button,
 /* ==========================================================================
    9. UTILITIES & ANIMATIONS
    ========================================================================== */
-.center { text-align: center; }
-.left { text-align: left; }
-.right { text-align: right; }
+
 .no-border { border-style: none; padding-bottom: 0; }
 .dtl-btn { padding-right: 20px; }
 .no-events { text-align: center; color: var(--thyme); font-style: italic; padding: 20px; }
@@ -706,13 +728,6 @@ button,
   display: none !important; 
   visibility: hidden !important;
   opacity: 0 !important;
-}
-.highlight-shadow-box { 
-  border: 1px solid; 
-  border-top-color: var(--salt); 
-  border-left-color: var(--salt); 
-  border-right-color: var(--cardamom); 
-  border-bottom-color: var(--cardamom); 
 }
 
 /* Loading Spinner */
@@ -731,15 +746,4 @@ button,
 @keyframes lemonRotation {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-.load-text {
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-  padding: 30px; 
-  color: var(--thyme);
-  font-size: 1em;
-  font-weight: bold;
-  text-align: center;
 }
