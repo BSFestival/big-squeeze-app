@@ -218,6 +218,7 @@ async function initDatabaseApp() {
                 title: row.Amenity_Title ? row.Amenity_Title.trim() : "",
                 content: processedContent,
                 image: row.Amenity_Image ? row.Amenity_Image.trim() : "",
+                imageLoc: row.News_Image_Loc ? row.Amenity_Image_Loc.trim().toUpperCase() : "L",
                 locationName: dbLocations[locId]?.name || "To Be Determined",
                 town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
@@ -232,7 +233,7 @@ async function initDatabaseApp() {
                 name: row.Food_Name ? row.Food_Name.trim() : "",
                 descrip: processedContent,
                 image: row.Food_Image ? row.Food_Image.trim() : "",
-                imageLoc: row.Food_Img_Loc ? row.Food_Img_Loc.trim().toUpperCase() : "L"
+                imageLoc: row.Food_Img_Loc ? row.Food_Image_Loc.trim().toUpperCase() : "L"
             };
         });
 
@@ -514,7 +515,7 @@ function renderAmenities() {
    const sortedAmenities = [...dbAmenities].sort((a, b) => a.title.localeCompare(b.title));
 
    sortedAmenities.forEach(item => {
-     const alignmentClass = "R";
+     const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
      const imageHtml = item.image 
          ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
          : "";
