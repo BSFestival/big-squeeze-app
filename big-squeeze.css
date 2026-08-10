@@ -202,8 +202,8 @@ button,
   justify-content: center; 
   text-decoration: none; 
   color: var(--thyme); 
-  font-size: 0.75em; 
-  font-weight: bold; 
+  /*font-size: 0.75em; 
+  font-weight: bold;*/
   cursor: pointer; 
   user-select: none; 
 }
@@ -402,7 +402,7 @@ button,
 
 .day-btn { 
   background: var(--avocado); 
-  color: var(--thyme); 
+  color: var(--cardamom); 
   border: none; 
   padding: 12px; 
   border-radius: 5px; 
