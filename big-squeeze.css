@@ -402,7 +402,7 @@ button,
 
 .day-btn { 
   background: var(--avocado); 
-  color: var(--cardamom); 
+  color: var(--thyme); 
   border: none; 
   padding: 12px; 
   border-radius: 5px; 
@@ -443,7 +443,7 @@ button,
   align-items: baseline;   
   font-size: 1em;
   font-weight: bold;
-  color: var(--cardamom);
+  color: var(--thyme);
   padding: 0 4px;
 }
 
@@ -488,14 +488,11 @@ button,
 #town-range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  /* width: 24px;
-  height: 24px;
-  border-radius: 50%; */
   width: 18px;
   height: 40px;
   border-radius: 12px;
-  background: var(--avocado);
-  border: 2px solid var(--lime);
+  background: var(--lime);
+  border: 2px solid var(--avocado);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: transform 0.75s cubic-bezier(0.78, 0, 0.22, 1);
@@ -507,14 +504,11 @@ button,
 
 /* Slider Track Thumb (Firefox) */
 #town-range-slider::-moz-range-thumb {
-  /* width: 24px;
-  height: 24px;
-  border-radius: 50%; */
   width: 18px;
   height: 40px;
   border-radius: 12px; 
-  background: var(--avocado);
-  border: 2px solid var(--lime);
+  background: var(--lime);
+  border: 2px solid var(--avocado);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
