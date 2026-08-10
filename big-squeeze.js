@@ -502,6 +502,31 @@ function renderNewsFeed() {
 }
 
 function renderInformation() {
+   // Food
+   const foodContainer = document.getElementById("all-food");
+    if (!foodContainer) return;
+
+   if (dbFood.length === 0) {
+        foodContainer.innerHTML = `<p class="no-events"></p>`;
+        return;
+    }
+
+   const sortedFood = [...dbFood].sort((a, b) => a.name.localeCompare(b.title));
+
+   sortedFood.forEach(item => {
+     const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
+     const imageHtml = item.image 
+         ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="Amenities graphic" />` 
+         : "";
+
+     foodContainer.innerHTML += `
+         <div class="card news-card">
+             <div class="card-title news-card-title">${item.name}</div>
+             ${imageHtml}
+             <p class="dtl-desc news-card-desc">${item.descrip}</p>
+         </div>`;
+    });
+   
    // Amenities 
    const amenitiesContainer = document.getElementById("all-amenities");
     if (!amenitiesContainer) return;
