@@ -189,35 +189,25 @@ button,
 /* Floating Modern Bar */
 .bottom-nav { 
   position: fixed; 
-  /* 1. Lift off bottom and center using margin auto */
   bottom: 20px; 
   left: 0; 
   right: 0; 
   margin: 0 auto;
-  
-  /* 2. Constrain width so it floats inside mobile/desktop screen bounds */
   width: calc(100% - 32px); 
   max-width: 500px; 
   height: 64px; 
-
-  /* 3. Frosted Glass (Glassmorphism) Background */
   background: color-mix(in srgb, var(--salt) 50%, transparent);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   backdrop-filter: blur(12px) saturate(180%);
-
-  /* 4. Rounded pill shape + modern drop shadow */
   border-radius: 32px;
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 
               0 8px 10px -6px rgba(0, 0, 0, 0.1);
-
   display: flex; 
   z-index: 1000; 
   justify-space-around: space-around; 
   align-items: center; 
   overflow: hidden; /* Clips children (like sliding indicator) inside pill radius */
-
-  /* Safe Area handling for modern mobile devices (iPhone home indicator) */
   margin-bottom: env(safe-area-inset-bottom, 0px);
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
