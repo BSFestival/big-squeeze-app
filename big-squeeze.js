@@ -511,6 +511,7 @@ function renderInformation() {
         return;
     }
 
+   foodContainer.innerHTML = `<h2>Food</h2>`;
    const sortedFood = [...dbFood].sort((a, b) => a.name.localeCompare(b.title));
 
    sortedFood.forEach(item => {
@@ -536,6 +537,7 @@ function renderInformation() {
         return;
     }
 
+   amenitiesContainer.innerHTML = `<h2>Amenities</h2>`;
    const sortedAmenities = [...dbAmenities].sort((a, b) => a.title.localeCompare(b.title));
 
    sortedAmenities.forEach(item => {
