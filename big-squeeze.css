@@ -445,7 +445,7 @@ button,
 .day-btn.active { 
   background: var(--lime); 
   color: var(--salt);
-  border: 1px solid var(--salt);
+  border: 2px solid var(--salt);
 }
 
 /* Sticky Town Range Slider Container */
