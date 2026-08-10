@@ -218,7 +218,7 @@ async function initDatabaseApp() {
                 title: row.Amenity_Title ? row.Amenity_Title.trim() : "",
                 content: processedContent,
                 image: row.Amenity_Image ? row.Amenity_Image.trim() : "",
-                imageLoc: row.News_Image_Loc ? row.Amenity_Image_Loc.trim().toUpperCase() : "L",
+                imageLoc: row.Amenity_Image_Loc ? row.Amenity_Image_Loc.trim().toUpperCase() : "L",
                 locationName: dbLocations[locId]?.name || "To Be Determined",
                 town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
@@ -240,7 +240,7 @@ async function initDatabaseApp() {
         // Initial Render Execution
         processAllSchedules();
         renderNewsFeed();
-        renderAmenities();
+        renderInformation();
         switchTab('home');
 
         // Hide Loading Screen Container
@@ -395,7 +395,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     </div>
                 </div>`;
         } else {
-            // Stacked Layout with Bottom Row (Events & Amenities)
+            // Stacked Layout with Bottom Row (Events)
             cardInnerHtml = `
                 <div class="card-content-stack">
                     <div class="card-text-block">
@@ -501,11 +501,10 @@ function renderNewsFeed() {
     });
 }
 
-function renderAmenities() {
-    const amenitiesContainer = document.getElementById("all-amenities");
+function renderInformation() {
+   // Amenities 
+   const amenitiesContainer = document.getElementById("all-amenities");
     if (!amenitiesContainer) return;
-
-    /* renderCards(dbAmenities, "all-amenities", "No amenities posted yet.", false); */
 
    if (dbAmenities.length === 0) {
         amenitiesContainer.innerHTML = `<p class="no-events">No amenities posted yet.</p>`;
@@ -517,7 +516,7 @@ function renderAmenities() {
    sortedAmenities.forEach(item => {
      const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
      const imageHtml = item.image 
-         ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
+         ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="Amenities graphic" />` 
          : "";
 
      amenitiesContainer.innerHTML += `
