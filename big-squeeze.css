@@ -63,7 +63,6 @@ h2 {
 .screen-title { 
   color: var(--avocado); 
   font-size: 2em; 
-  /* border-bottom: 2px solid var(--avocado); */
   padding-bottom: 5px; 
   margin-top: 20px; 
 }
