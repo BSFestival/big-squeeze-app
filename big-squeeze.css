@@ -120,7 +120,7 @@ button,
   max-width: 600px; 
   margin: auto; 
   padding: 15px; 
-  padding-bottom: 110px; 
+  padding-bottom: 90px; 
   height: auto; 
   display: flex; 
   flex-direction: column; 
@@ -211,6 +211,13 @@ button,
 
   /* Safe Area handling for modern mobile devices (iPhone home indicator) */
   margin-bottom: env(safe-area-inset-bottom, 0px);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Hidden state: slides the bar completely below the viewport */
+.bottom-nav.nav-hidden {
+  /* Translates down off-screen (100px is enough to clear the 64px height + bottom margins) */
+  transform: translateY(120px); 
 }
 
 .tab-link { 
