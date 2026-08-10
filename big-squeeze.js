@@ -735,7 +735,7 @@ function switchTab(target) {
             'events': 1,
             'stands': 2,
             'map': 3,
-            'amenities': 4
+            'info': 4
         };
         
         const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
