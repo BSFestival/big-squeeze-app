@@ -62,7 +62,8 @@ h2 {
 
 .screen-title { 
   color: var(--avocado); 
-  font-size: 2em; 
+  font-size: 1.8em; 
+  font-weight: bold;
   padding-bottom: 5px; 
   margin-top: 20px; 
 }
@@ -392,8 +393,8 @@ button,
   align-items: center; 
   justify-content: center; 
   background: var(--cream); 
-  width: 64px; 
-  height: 64px; 
+  width: 48px; 
+  height: 48px; 
   border-radius: 50%; 
   text-decoration: none; 
   border: 1px outset var(--avocado); 
