@@ -54,8 +54,8 @@ h1 {
 
 h2 { 
   color: var(--avocado); 
-  font-size: 1.5em; 
-  border-bottom: 2px solid var(--avocado); 
+  font-size: 1.75em; 
+  /* border-bottom: 2px solid var(--avocado); */
   padding-bottom: 5px; 
   margin-top: 20px; 
 }
@@ -475,7 +475,7 @@ button,
   align-items: baseline;   
   font-size: 1em;
   font-weight: bold;
-  color: var(--thyme);
+  color: color-mix(in srgb, var(--cardamom) 50%, var(--thyme));
   padding: 0 4px;
 }
 
