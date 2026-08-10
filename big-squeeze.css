@@ -445,6 +445,7 @@ button,
 .day-btn.active { 
   background: var(--lime); 
   color: var(--salt);
+  box-sizing: content-box;
   border: 2px solid var(--salt);
 }
 
