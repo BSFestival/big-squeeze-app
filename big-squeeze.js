@@ -511,7 +511,7 @@ function renderInformation() {
         return;
     }
 
-   foodContainer.innerHTML = `<h2>Food</h2>`;
+   foodContainer.innerHTML = `<h2>Food Options</h2>`;
    const sortedFood = [...dbFood].sort((a, b) => a.name.localeCompare(b.title));
 
    sortedFood.forEach(item => {
