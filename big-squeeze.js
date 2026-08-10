@@ -247,6 +247,8 @@ async function initDatabaseApp() {
         if (loadingElem) {
             loadingElem.classList.add("hidden");
         }
+
+       
         
     } catch (err) {
         console.error("Database initialization processing crash failure:", err);
@@ -712,6 +714,10 @@ function switchTab(target) {
         const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
         indicator.style.transform = `translateX(${positionIndex * 100}%)`;
     }
+   const navBar = document.querySelector('.bottom-nav');
+   if (navBar) {
+     navBar.classList.remove('nav-hidden');
+   }
 }
 
 function switchDay(dateStr, event) {
@@ -727,3 +733,27 @@ function switchDay(dateStr, event) {
    8. APPLICATION BOOTSTRAPPER
    ========================================================================== */
 initDatabaseApp();
+
+// ==========================================
+// HIDE / SHOW FLOATING NAV ON SCROLL
+// ==========================================
+let lastScrollY = window.scrollY;
+const navBar = document.querySelector('.bottom-nav');
+
+window.addEventListener('scroll', () => {
+  const currentScrollY = window.scrollY;
+
+  if (currentScrollY <= 0) {
+    navBar.classList.remove('nav-hidden');
+    lastScrollY = currentScrollY;
+    return;
+  }
+
+  if (currentScrollY > lastScrollY + 10) {
+    navBar.classList.add('nav-hidden');
+  } else if (currentScrollY < lastScrollY - 10) {
+    navBar.classList.remove('nav-hidden');
+  }
+
+  lastScrollY = currentScrollY;
+});
