@@ -507,7 +507,7 @@ function renderInformation() {
     if (!foodContainer) return;
 
    if (dbFood.length === 0) {
-        foodContainer.innerHTML = `<p class="no-events"></p>`;
+        foodContainer.innerHTML = `<p class="no-events">&nbsp;</p>`;
         return;
     }
 
