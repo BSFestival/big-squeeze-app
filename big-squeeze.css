@@ -193,7 +193,7 @@ button,
   height: 64px; 
 
   /* 3. Frosted Glass (Glassmorphism) Background */
-  background: color-mix(in srgb, var(--salt) 75%, transparent);
+  background: color-mix(in srgb, var(--salt) 50%, transparent);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   backdrop-filter: blur(12px) saturate(180%);
 
