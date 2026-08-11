@@ -366,15 +366,6 @@ button,
     width: 100%;
 }
 
-/* Event Thumbnail Style */
-.event-thumb {
-    width: 128px;
-    height: 64px;
-    object-fit: cover;             /* Ensures image fills 128x64 without distortion */
-    border-radius: 8px;
-    flex-shrink: 0;                /* Prevents image from squishing on tiny screens */
-}
-
 .card-actions { 
   display: flex; 
   gap: 15px; 
