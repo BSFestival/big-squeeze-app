@@ -218,6 +218,8 @@ button,
 }
 
 .tab-link { 
+  position: relative;
+  z-index: 2;                        /* Ensures icon and text stay on top of the indicator */
   flex: 1; 
   height: 100%;
   display: flex; 
@@ -240,17 +242,19 @@ button,
   margin-bottom: 2px; 
 }
 
-/* Sliding Indicator Bar Adjusted for Floating Pill Design */
+/* Active Tab Pill/Circle Indicator */
 #nav-indicator { 
   position: absolute; 
-  bottom: 0; 
+  top: 50%;
   left: 0; 
-  height: 4px; 
-  width: 20%; 
-  background-color: var(--mango); 
-  border-top-left-radius: 4px; 
-  border-top-right-radius: 4px; 
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+  height: 48px;                      /* Sized nicely inside the 64px nav bar */
+  width: 20%;                        /* Matches 1/5th width of 5 tabs */
+  background-color: var(--mango);    /* --mango highlight circle */
+  border-radius: 24px;               /* Rounded circle/pill shape */
+  z-index: 1;                        /* Placed behind icons (which sit at default/higher z-index) */
+  transform: translateY(-50%) translateX(0); /* Centers vertically */
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1); 
+  pointer-events: none;              /* Allows tap events to pass through to the <a> links */
 }
 
 /* ==========================================================================
