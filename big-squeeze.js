@@ -378,97 +378,101 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         
         const inlineClass = isStandsScreen ? "ca-inline" : "";
 
-        // Template Builder
+        // Cover Image Attributes
+        const hasCover = Boolean(item.coverImage && item.coverImage.trim() !== "");
+        const coverStyle = hasCover ? `style="--card-cover: url('${item.coverImage.trim()}');"` : '';
+        const coverClass = hasCover ? 'has-cover-image' : '';
+
+        // Inner Card Template Builder
         let cardInnerHtml = "";
-       
-      // Check if cover image exists
-      const hasCover = Boolean(item.coverImage && item.coverImage.trim() !== "");
-      const coverStyle = hasCover ? `style="--card-cover: url('${item.coverImage.trim()}');"` : '';
-      const coverClass = hasCover ? 'has-cover-image' : '';
-       
-      if (isStandsScreen) {
-          cardInnerHtml = `
-              <div class="card-content-split ${coverClass}" ${coverStyle}>
-                  <div class="card-text-block">
-                      <div class="card-title">${cardTitle}</div>
-                      <div class="location">${item.locationName || 'Festival Grounds'}${item.town && item.town !== 'Unknown' ? `, ${item.town}` : ''}</div>
-                  </div>
-      
-                  <div class="card-actions ca-inline">
-                      ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
-                      ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
-                  </div>
-              </div>`;
-      } else {
-          cardInnerHtml = `
-              <div class="card-content-stack ${coverClass}" ${coverStyle}>
-                  <div class="card-text-block">
-                      <div class="card-title">${cardTitle}</div>
-                      ${(hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
-                      <div class="location">${item.locationName || 'Festival Grounds'}${item.town && item.town !== 'Unknown' ? `, ${item.town}` : ''}</div>
-                  </div>
-      
-                  <div class="card-bottom-row">
-                      ${eventThumbHtml}
-      
-                      <div class="card-actions ${inlineClass}">
-                          ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
-                          
-                          ${showReminderButton ? `
-                          <div class="reminder-dropdown">
-                              <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me">
-                                  <img src="images/buttons/bell.webp" alt="Remind" />
-                              </button>
-                              <div id="${menuId}" class="reminder-menu">
-                                  <div id="${menuId}-step1" class="menu-step">
-                                      <button onclick="triggerNotificationPlaceholder('${safeName}', event)">Push Notification</button>
-                                      <button onclick="showMenuStep('${menuId}', 2, event)">Add to Calendar</button>
-                                  </div>
-                          
-                                  <div id="${menuId}-step2" class="menu-step hidden">
-                                      <button onclick="showMenuStep('${menuId}', 1, event)" class="menu-back-btn">← Back</button>
-                                      <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
-                                      <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
-                                  </div>
-                              </div>
-                          </div>
-                          ` : ''}
-                          
-                          ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
-                      </div>
-                  </div>
-              </div>`;
-      }
+
+        if (isStandsScreen) {
+            // Side-by-Side Layout (Lemonade Stands)
+            cardInnerHtml = `
+                <div class="card-content-split">
+                    <div class="card-text-block">
+                        <div class="card-title">${cardTitle}</div>
+                        <div class="location">${item.locationName || 'Festival Grounds'}${item.town && item.town !== 'Unknown' ? `, ${item.town}` : ''}</div>
+                    </div>
+
+                    <div class="card-actions ca-inline">
+                        ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
+                    </div>
+                </div>`;
+        } else {
+            // Stacked Layout with Bottom Row (Events)
+            cardInnerHtml = `
+                <div class="card-content-stack">
+                    <div class="card-text-block">
+                        <div class="card-title">${cardTitle}</div>
+                        ${(hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
+                        <div class="location">${item.locationName || 'Festival Grounds'}${item.town && item.town !== 'Unknown' ? `, ${item.town}` : ''}</div>
+                    </div>
+
+                    <div class="card-bottom-row">
+                        ${eventThumbHtml}
+
+                        <div class="card-actions ${inlineClass}">
+                            ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                            
+                            ${showReminderButton ? `
+                            <div class="reminder-dropdown">
+                                <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me">
+                                    <img src="images/buttons/bell.webp" alt="Remind" />
+                                </button>
+                                <div id="${menuId}" class="reminder-menu">
+                                    <!-- STEP 1: INITIAL CHOICE MENU -->
+                                    <div id="${menuId}-step1" class="menu-step">
+                                        <button onclick="triggerNotificationPlaceholder('${safeName}', event)">Push Notification</button>
+                                        <button onclick="showMenuStep('${menuId}', 2, event)">Add to Calendar</button>
+                                    </div>
+                            
+                                    <!-- STEP 2: CALENDAR CHOICE MENU -->
+                                    <div id="${menuId}-step2" class="menu-step hidden">
+                                        <button onclick="showMenuStep('${menuId}', 1, event)" class="menu-back-btn">← Back</button>
+                                        <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
+                                        <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
+                                    </div>
+                                </div>
+                            </div>
+                            ` : ''}
+                            
+                            ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        // Apply coverClass and coverStyle to the OUTER card container
         container.innerHTML += `
-            <div class="card highlight-shadow-box">
+            <div class="card highlight-shadow-box ${coverClass}" ${coverStyle}>
                 ${cardInnerHtml}
                 
-            ${hasDetailsButton ? `
-                <div id="${uniqueId}" class="expanded-details">
-                    ${item.dname ? `<h3>${item.dname}</h3>` : ''}
-                    <div id="${uniqueId}-image" class="dtl-image">
-                        ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
+                ${hasDetailsButton ? `
+                    <div id="${uniqueId}" class="expanded-details">
+                        ${item.dname ? `<h3>${item.dname}</h3>` : ''}
+                        <div id="${uniqueId}-image" class="dtl-image">
+                            ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
+                        </div>
+                        <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
+                        
+                        <!-- Safe Share Button renders ONLY if Detail_Sharable == "Y" -->
+                        ${isSharable ? `
+                        <div class="details-share-wrapper">
+                            <button onclick="shareDetails(this, event)" 
+                                    data-title="${safeTitleAttr}" 
+                                    data-details="${safeDetailsAttr}" 
+                                    class="g-btn" 
+                                    aria-label="Share Event">
+                                <img src="images/buttons/share.webp" alt="Share" />
+                            </button>
+                        </div>` : ''}
                     </div>
-                    <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
-                    
-                    <!-- Safe Share Button renders ONLY if Detail_Sharable == "Y" -->
-                    ${isSharable ? `
-                    <div class="details-share-wrapper">
-                        <button onclick="shareDetails(this, event)" 
-                                data-title="${safeTitleAttr}" 
-                                data-details="${safeDetailsAttr}" 
-                                class="g-btn" 
-                                aria-label="Share Event">
-                            <img src="images/buttons/share.webp" alt="Share" />
-                        </button>
-                    </div>` : ''}
-                </div>
-            ` : ''}
-          
-      </div>`;
+                ` : ''}
+          </div>`;
     });
 }
-
 function renderNewsFeed() {
     const newsContainer = document.getElementById("news-feed");
     if (!newsContainer) return;
