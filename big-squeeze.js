@@ -368,11 +368,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const safeDetailsAttr = itemDetails.replace(/"/g, '&quot;').replace(/<br\s*\/?>/gi, ' ').replace(/\n/g, ' ');
         const safeTitleAttr = cardTitle.replace(/"/g, '&quot;');
 
-        const menuId = `${elementId}-remind-${index}`;
-
         // Screen Context Checks
         const isStandsScreen = elementId === "all-stands" || elementId.includes("stands");
-        const showReminderButton = (elementId === "all-events");
         
         const inlineClass = isStandsScreen ? "ca-inline" : "";
 
@@ -411,29 +408,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     <div class="card-bottom-row">
                         <div class="card-actions ${inlineClass}">
                             ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
-                            
-                            ${showReminderButton ? `
-                            <div class="reminder-dropdown">
-                                <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me">
-                                    <img src="images/buttons/bell.webp" alt="Remind" />
-                                </button>
-                                <div id="${menuId}" class="reminder-menu">
-                                    <!-- STEP 1: INITIAL CHOICE MENU -->
-                                    <div id="${menuId}-step1" class="menu-step">
-                                        <button onclick="triggerNotificationPlaceholder('${safeName}', event)">Push Notification</button>
-                                        <button onclick="showMenuStep('${menuId}', 2, event)">Add to Calendar</button>
-                                    </div>
-                            
-                                    <!-- STEP 2: CALENDAR CHOICE MENU -->
-                                    <div id="${menuId}-step2" class="menu-step hidden">
-                                        <button onclick="showMenuStep('${menuId}', 1, event)" class="menu-back-btn">← Back</button>
-                                        <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
-                                        <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
-                                    </div>
-                                </div>
-                            </div>
-                            ` : ''}
-                            
+                                                       
                             ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
                         </div>
                     </div>
@@ -580,39 +555,6 @@ function toggleCardDetails(targetDivId) {
     }
 }
 
-// STEP TRANSITION ENGINE FOR REMINDER MENUS
-function showMenuStep(menuId, stepNumber, event) {
-    if (event) event.stopPropagation();
-    
-    const step1 = document.getElementById(`${menuId}-step1`);
-    const step2 = document.getElementById(`${menuId}-step2`);
-    
-    if (step1 && step2) {
-        if (stepNumber === 1) {
-            step1.classList.remove('hidden');
-            step2.classList.add('hidden');
-        } else if (stepNumber === 2) {
-            step1.classList.add('hidden');
-            step2.classList.remove('hidden');
-        }
-    }
-}
-
-// TOGGLE REMINDER MENU (RESETS TO STEP 1 WHEN OPENED)
-function toggleReminderMenu(menuId, event) {
-    if (event) event.stopPropagation();
-    
-    document.querySelectorAll('.reminder-menu').forEach(m => {
-        if (m.id !== menuId) m.classList.remove('show');
-    });
-    
-    const targetMenu = document.getElementById(menuId);
-    if (targetMenu) {
-        showMenuStep(menuId, 1);
-        targetMenu.classList.toggle('show');
-    }
-}
-
 function shareDetails(buttonEl, event) {
     if (event) {
         event.stopPropagation();
@@ -640,60 +582,6 @@ function shareDetails(buttonEl, event) {
             alert(`Share: ${title}`);
         });
     }
-}
-
-// PLACEHOLDER HANDLER FOR ONESIGNAL PUSH NOTIFICATIONS
-function triggerNotificationPlaceholder(eventName, event) {
-    if (event) event.stopPropagation();
-    alert(`Push notification registration for "${eventName}" will be enabled once OneSignal integration is complete!`);
-    
-    document.querySelectorAll('.reminder-menu').forEach(m => m.classList.remove('show'));
-}
-
-// Global click handler to dismiss open dropdown menus
-window.addEventListener('click', () => {
-    document.querySelectorAll('.reminder-menu').forEach(m => m.classList.remove('show'));
-});
-
-// Calendar Export Helpers
-function formatToCalTime(dateStr) {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
-    return d.toISOString().replace(/-|:|\.\d\d\d/g, "");
-}
-
-function openGoogleCalendar(name, start, end, location) {
-    const gStart = formatToCalTime(start);
-    const gEnd = formatToCalTime(end);
-    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(name)}&dates=${gStart}/${gEnd}&details=Set from Big Squeeze App&location=${encodeURIComponent(location)}&sf=true&output=xml`;
-    window.open(url, '_blank');
-}
-
-function downloadAppleCalendar(name, start, end, location) {
-    const iStart = formatToCalTime(start);
-    const iEnd = formatToCalTime(end);
-    
-    const icsContent = [
-        "BEGIN:VCALENDAR",
-        "VERSION:2.0",
-        "PRODID:-//Big Squeeze//Event Calendar//EN",
-        "BEGIN:VEVENT",
-        `SUMMARY:${name}`,
-        `DTSTART:${iStart}`,
-        `DTEND:${iEnd}`,
-        `LOCATION:${location}`,
-        "DESCRIPTION:Reminder from The Big Squeeze App",
-        "END:VEVENT",
-        "END:VCALENDAR"
-    ].join("\r\n");
-
-    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8;" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.setAttribute("download", `${name.replace(/\s+/g, '_')}.ics`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
 }
 
 /* ==========================================================================
