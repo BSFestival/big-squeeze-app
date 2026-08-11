@@ -331,6 +331,7 @@ button,
 .card.has-cover-image .time,
 .card.has-cover-image .location {
   color: var(--salt) !important;
+  -webkit-text-stroke: 1px var(--pepper);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); /* Subtle text shadow for extra punch over bright areas */
 }
 
@@ -385,6 +386,7 @@ button,
   background-color: var(--banana); 
   border-style: none; 
   box-shadow: none; 
+  margin: 0;
 }
 
 .news-card::after { 
