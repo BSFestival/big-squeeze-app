@@ -461,9 +461,8 @@ button,
 
 .day-btn { 
   background: var(--avocado); 
-  /* color: color-mix(in srgb, var(--cardamom) 50%, var(--thyme)); */
-  color: var(--mint);
-  border: 2px solid var(--mint); 
+  color: color-mix(in srgb, var(--cardamom) 50%, var(--thyme)); 
+  border: 2px solid color-mix(in srgb, var(--cardamom) 50%, var(--thyme)); 
   padding: 12px; 
   border-radius: 5px; 
   font-weight: bold; 
