@@ -618,7 +618,7 @@ function switchTab(target) {
     if (navBtn) navBtn.classList.add('active');
 
 // 5. Sliding Indicator Tracking
-    const indicator = document.getElementById('nav-indicator');
+const indicator = document.getElementById('nav-indicator');
     if (indicator) {
         const tabPositions = {
             'home': 0,
@@ -629,8 +629,8 @@ function switchTab(target) {
         };
         
         const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
-        // Keeps vertical center alignment while shifting horizontally across 20% width slots
-        indicator.style.transform = `translateY(-50%) translateX(${positionIndex * 100}%)`;
+        // Keeps vertical centering & lemon tilt while sliding horizontally
+        indicator.style.transform = `translateY(-50%) translateX(${positionIndex * 100}%) rotate(-10deg)`;
     }
    const navBar = document.querySelector('.bottom-nav');
    if (navBar) {
