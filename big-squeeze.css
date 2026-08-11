@@ -309,12 +309,12 @@ button,
 .card.has-cover-image {
   /* Semi-transparent white overlay over the background image for text contrast */
   background-image: linear-gradient(
-                      rgba(255, 255, 255, 0.85), 
-                      rgba(255, 255, 255, 0.85)
+                      rgba(255, 255, 255, 0.75), 
+                      rgba(255, 255, 255, 0.75)
                     ), 
                     var(--card-cover) !important;
-  background-size: cover !important;
-  background-position: center !important;
+  /* background-size: cover !important;
+  background-position: center !important; */
   background-repeat: no-repeat !important;
 }
 
