@@ -55,7 +55,7 @@ h1 {
 h2 { 
   color: var(--avocado); 
   font-size: 1.5em; 
-  /* border-bottom: 2px solid var(--avocado); */
+  border-bottom: 2px solid var(--avocado); 
   padding-bottom: 5px; 
   margin-top: 20px; 
 }
@@ -247,7 +247,7 @@ button,
   left: 0; 
   height: 4px; 
   width: 20%; 
-  background-color: var(--avocado); 
+  background-color: var(--mango); 
   border-top-left-radius: 4px; 
   border-top-right-radius: 4px; 
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
