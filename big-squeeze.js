@@ -174,7 +174,6 @@ async function initDatabaseApp() {
                 name: row.Event_Name ? row.Event_Name.trim() : "Unnamed Event",
                 start: row.Event_Start ? row.Event_Start.trim() : "",
                 end: row.Event_End ? row.Event_End.trim() : "",
-                thumbnail: row.Event_Thumbnail ? row.Event_Thumbnail.trim() : "",
                 coverImage: row.Event_Card_Image ? row.Event_Card_Image.trim() : "",
                 locationName: dbLocations[locId]?.name || "To Be Determined",
                 town: dbLocations[locId]?.town || "Unknown",
@@ -374,7 +373,6 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         // Screen Context Checks
         const isStandsScreen = elementId === "all-stands" || elementId.includes("stands");
         const showReminderButton = (elementId === "all-events");
-        const eventThumbHtml = (item.thumbnail && !isStandsScreen) ? `<img src="${item.thumbnail}" class="event-thumb" alt="" />` : '';
         
         const inlineClass = isStandsScreen ? "ca-inline" : "";
 
@@ -411,8 +409,6 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     </div>
 
                     <div class="card-bottom-row">
-                        ${eventThumbHtml}
-
                         <div class="card-actions ${inlineClass}">
                             ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                             
