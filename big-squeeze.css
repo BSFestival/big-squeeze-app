@@ -305,12 +305,12 @@ button,
   gap: 15px; 
 }
 
-/* Apply background image directly to card container */
+/* Apply background image directly to card container with 10% dark overlay */
 .card.has-cover-image {
-  /* Semi-transparent white overlay over the background image for text contrast */
+  /* 10% black tint (rgba 0,0,0,0.10) to slightly soften bright photos for text contrast */
   background-image: linear-gradient(
-                      rgba(255, 255, 255, 0.75), 
-                      rgba(255, 255, 255, 0.75)
+                      rgba(0, 0, 0, 0.10), 
+                      rgba(0, 0, 0, 0.10)
                     ), 
                     var(--card-cover) !important;
   background-size: cover !important;
@@ -318,7 +318,7 @@ button,
   background-repeat: no-repeat !important;
 }
 
-/* Force all inner wrappers to be transparent so the background shows through */
+/* Force all inner wrappers to be transparent */
 .card.has-cover-image .card-content-stack,
 .card.has-cover-image .card-content-split,
 .card.has-cover-image .card-text-block,
@@ -327,13 +327,33 @@ button,
   background-color: transparent !important;
 }
 
+/* Text color overrides for cover image cards */
+.card.has-cover-image .card-title,
+.card.has-cover-image .time,
+.card.has-cover-image .location {
+  color: var(--salt) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7); /* Subtle text shadow for extra punch over bright areas */
+}
+
+/* Ensure location pin/town icons stay legible on cover cards */
+.card.has-cover-image .location {
+  color: var(--salt) !important;
+}
+
 /* Ensure expanded details drawer gets a solid background overlay when opened */
 .card.has-cover-image .expanded-details {
   background-color: var(--mint) !important;
-  margin: 15px -15px -15px -15px; /* Pulls drawer edges to full card boundaries */
+  margin: 15px -15px -15px -15px;
   padding: 15px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+}
+
+/* Reset expanded details inner text back to dark standard color */
+.card.has-cover-image .expanded-details h3,
+.card.has-cover-image .expanded-details .dtl-desc {
+  color: var(--thyme) !important;
+  text-shadow: none !important;
 }
 
 /* Container for the bottom row of the event card */
