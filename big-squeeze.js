@@ -175,6 +175,7 @@ async function initDatabaseApp() {
                 start: row.Event_Start ? row.Event_Start.trim() : "",
                 end: row.Event_End ? row.Event_End.trim() : "",
                 thumbnail: row.Event_Thumbnail ? row.Event_Thumbnail.trim() : "",
+                coverImage: row.Event_Card_Image ? row.Event_Card_Image.trim() : "",
                 locationName: dbLocations[locId]?.name || "To Be Determined",
                 town: dbLocations[locId]?.town || "Unknown",
                 mapUrl: dbLocations[locId]?.mapUrl || "#",
