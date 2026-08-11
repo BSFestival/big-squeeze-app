@@ -305,22 +305,35 @@ button,
   gap: 15px; 
 }
 
-/* Card Cover Image Styling */
-.card-content-stack.has-cover-image,
-.card-content-split.has-cover-image {
+/* Outer Card Cover Image Setup */
+.card.has-cover-image {
   background-image: linear-gradient(
-                      rgba(255, 255, 255, 0.82), 
+                      rgba(255, 255, 255, 0.80), 
                       rgba(255, 255, 255, 0.88)
                     ), 
                     var(--card-cover);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 12px;
-  padding: 10px;
-  margin: -5px; /* Ensures the cover reaches the inner edges cleanly */
+  position: relative;
 }
 
+/* Ensure inner elements don't block the background image */
+.card.has-cover-image .card-content-stack,
+.card.has-cover-image .card-content-split,
+.card.has-cover-image .card-text-block,
+.card.has-cover-image .card-bottom-row {
+  background: transparent !important;
+}
+
+/* Ensure expanded details drawer hides the cover photo under solid background */
+.card.has-cover-image .expanded-details {
+  background-color: var(--mint);
+  margin: 10px -15px -15px -15px; /* Pulls drawer edges flush with card padding */
+  padding: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
 /* Container for the bottom row of the event card */
 .card-bottom-row {
     display: flex;
@@ -354,18 +367,6 @@ button,
   margin-top: 0; 
   align-self: center; 
   flex-shrink: 0; 
-}
-
-/* Ensure expanded detail drawers render over solid backgrounds */
-.expanded-details {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-in-out;
-  padding: 0 10px;
-  background-color: var(--mint); /* Matches your card container color */
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
 }
 
 .news-card { 
