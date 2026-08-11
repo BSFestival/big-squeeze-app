@@ -340,6 +340,18 @@ button,
   flex-shrink: 0; 
 }
 
+/* Ensure expanded detail drawers render over solid backgrounds */
+.expanded-details {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-in-out;
+  padding: 0 10px;
+  background-color: var(--mint); /* Matches your card container color */
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
 .news-card { 
   background-color: var(--banana); 
   border-style: none; 
