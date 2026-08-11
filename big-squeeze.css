@@ -306,14 +306,14 @@ button,
 
 /* Apply background image directly to card container with 10% dark overlay */
 .card.has-cover-image {
-  /* 10% black tint (rgba 0,0,0,0.10) to slightly soften bright photos for text contrast */
   background-image: linear-gradient(
                       rgba(0, 0, 0, 0.10), 
                       rgba(0, 0, 0, 0.10)
                     ), 
                     var(--card-cover) !important;
-  background-size: cover !important;
-  background-position: center !important;
+  /* Keeps image scaled relative to top width so opening the drawer won't zoom the photo */
+  background-size: 100% auto !important;
+  background-position: top center !important;
   background-repeat: no-repeat !important;
 }
 
@@ -342,10 +342,16 @@ button,
 /* Ensure expanded details drawer gets a solid background overlay when opened */
 .card.has-cover-image .expanded-details {
   background-color: var(--mint) !important;
-  margin: 15px -15px -15px -15px;
-  padding: 15px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  margin: 0 -15px 0 -15px; /* Zero out top/bottom margins when hidden */
+  transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-in-out, margin 0.3s ease;
+}
+
+/* Active open drawer state (applies margin only when expanded) */
+.card.has-cover-image .expanded-details.show {
+  margin: 15px -15px -15px -15px;
+  padding: 15px;
 }
 
 /* Reset expanded details inner text back to dark standard color */
