@@ -460,8 +460,9 @@ button,
 
 .day-btn { 
   background: var(--avocado); 
-  color: color-mix(in srgb, var(--cardamom) 50%, var(--thyme)); 
-  border: none; 
+  /* color: color-mix(in srgb, var(--cardamom) 50%, var(--thyme)); */
+  color: var(--mint);
+  border: 2px solid var(--mint); 
   padding: 12px; 
   border-radius: 5px; 
   font-weight: bold; 
@@ -473,7 +474,6 @@ button,
 .day-btn.active { 
   background: var(--lime); 
   color: var(--salt);
-  box-sizing: content-box;
   border: 2px solid var(--salt);
 }
 
