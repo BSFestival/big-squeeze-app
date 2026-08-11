@@ -305,35 +305,37 @@ button,
   gap: 15px; 
 }
 
-/* Outer Card Cover Image Setup */
+/* Apply background image directly to card container */
 .card.has-cover-image {
+  /* Semi-transparent white overlay over the background image for text contrast */
   background-image: linear-gradient(
-                      rgba(255, 255, 255, 0.80), 
-                      rgba(255, 255, 255, 0.88)
+                      rgba(255, 255, 255, 0.85), 
+                      rgba(255, 255, 255, 0.85)
                     ), 
-                    var(--card-cover);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
+                    var(--card-cover) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
 }
 
-/* Ensure inner elements don't block the background image */
+/* Force all inner wrappers to be transparent so the background shows through */
 .card.has-cover-image .card-content-stack,
 .card.has-cover-image .card-content-split,
 .card.has-cover-image .card-text-block,
 .card.has-cover-image .card-bottom-row {
   background: transparent !important;
+  background-color: transparent !important;
 }
 
-/* Ensure expanded details drawer hides the cover photo under solid background */
+/* Ensure expanded details drawer gets a solid background overlay when opened */
 .card.has-cover-image .expanded-details {
-  background-color: var(--mint);
-  margin: 10px -15px -15px -15px; /* Pulls drawer edges flush with card padding */
+  background-color: var(--mint) !important;
+  margin: 15px -15px -15px -15px; /* Pulls drawer edges to full card boundaries */
   padding: 15px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
 }
+
 /* Container for the bottom row of the event card */
 .card-bottom-row {
     display: flex;
@@ -462,7 +464,7 @@ button,
 .day-btn { 
   background: var(--avocado); 
   color: color-mix(in srgb, var(--cardamom) 50%, var(--thyme)); 
-  border: 2px solid color-mix(in srgb, var(--cardamom) 50%, var(--thyme)); 
+  border: 2px solid transparent; 
   padding: 12px; 
   border-radius: 5px; 
   font-weight: bold; 
