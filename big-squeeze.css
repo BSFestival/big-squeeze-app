@@ -113,8 +113,7 @@ button,
 .g-btn,
 .tab-link,
 .day-btn,
-.town-btn,
-.reminder-menu {
+.town-btn {
   -webkit-touch-callout: none; /* Disable iOS callout menu on press-and-hold */
   -webkit-user-select: none;   /* Disable text selection */
   user-select: none;
@@ -625,62 +624,6 @@ button,
   font-size: 1.1em; 
   white-space: pre-wrap; 
 }
-
-/* Remind Me Dropdown */
-.reminder-dropdown { 
-  position: relative; 
-  display: inline-block; 
-}
-
-.reminder-menu { 
-  display: none; 
-  position: absolute; 
-  bottom: 110%; 
-  right: 0; 
-  background-color: var(--banana); 
-  color: var(--pepper); 
-  font-size: 1em;
-  min-width: 160px; 
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.2); 
-  border: 1.5px solid var(--avocado); 
-  border-radius: 8px; 
-  z-index: 20; 
-  padding: 5px 0; 
-}
-
-.reminder-menu button { 
-  background: none; 
-  border: none; 
-  color: var(--thyme); 
-  padding: 10px 15px; 
-  text-align: left; 
-  width: 100%; 
-  display: block; 
-  font-size: 1em; 
-  cursor: pointer; 
-}
-
-.reminder-menu .menu-step {
-    display: flex;
-    flex-direction: column;
-    font-size: 1em;
-    width: 100%;
-}
-
-.reminder-menu .menu-back-btn {
-    font-size: 1em;
-    font-weight: bold;
-    color: var(--habanero);
-    border-bottom: 1px solid #eee;
-    padding: 6px 15px;
-}
-
-.reminder-menu .menu-back-btn:hover {
-    background-color: var(--cream);
-}
-
-.reminder-menu button:hover { background-color: var(--cream); }
-.reminder-menu.show { display: block; }
 
 /* ==========================================================================
    8. MEDIA & FEATURE-SPECIFIC COMPONENTS
