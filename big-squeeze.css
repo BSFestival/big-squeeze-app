@@ -313,8 +313,8 @@ button,
                       rgba(255, 255, 255, 0.75)
                     ), 
                     var(--card-cover) !important;
-  /* background-size: cover !important;
-  background-position: center !important; */
+  background-size: cover !important;
+  background-position: center !important;
   background-repeat: no-repeat !important;
 }
 
