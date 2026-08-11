@@ -381,15 +381,14 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         // Template Builder
         let cardInnerHtml = "";
        
-        // Inline style builder for background cover images on collapsed cards
-        const coverImageStyle = item.coverImage 
-            ? `style="background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.85)), url('${item.coverImage}'); background-size: cover; background-position: center; border-radius: 12px; padding: 12px;"` 
-            : '';
+      // Check if cover image exists
+      const hasCover = Boolean(item.coverImage && item.coverImage.trim() !== "");
+      const coverStyle = hasCover ? `style="--card-cover: url('${item.coverImage.trim()}');"` : '';
+      const coverClass = hasCover ? 'has-cover-image' : '';
        
       if (isStandsScreen) {
-          // Side-by-Side Layout (Lemonade Stands)
           cardInnerHtml = `
-              <div class="card-content-split" ${coverImageStyle}>
+              <div class="card-content-split ${coverClass}" ${coverStyle}>
                   <div class="card-text-block">
                       <div class="card-title">${cardTitle}</div>
                       <div class="location">${item.locationName || 'Festival Grounds'}${item.town && item.town !== 'Unknown' ? `, ${item.town}` : ''}</div>
@@ -401,9 +400,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                   </div>
               </div>`;
       } else {
-          // Stacked Layout with Bottom Row (Events)
           cardInnerHtml = `
-              <div class="card-content-stack" ${coverImageStyle}>
+              <div class="card-content-stack ${coverClass}" ${coverStyle}>
                   <div class="card-text-block">
                       <div class="card-title">${cardTitle}</div>
                       ${(hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
@@ -422,13 +420,11 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                                   <img src="images/buttons/bell.webp" alt="Remind" />
                               </button>
                               <div id="${menuId}" class="reminder-menu">
-                                  <!-- STEP 1: INITIAL CHOICE MENU -->
                                   <div id="${menuId}-step1" class="menu-step">
                                       <button onclick="triggerNotificationPlaceholder('${safeName}', event)">Push Notification</button>
                                       <button onclick="showMenuStep('${menuId}', 2, event)">Add to Calendar</button>
                                   </div>
                           
-                                  <!-- STEP 2: CALENDAR CHOICE MENU -->
                                   <div id="${menuId}-step2" class="menu-step hidden">
                                       <button onclick="showMenuStep('${menuId}', 1, event)" class="menu-back-btn">← Back</button>
                                       <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
@@ -443,7 +439,6 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                   </div>
               </div>`;
       }
-
         container.innerHTML += `
             <div class="card highlight-shadow-box">
                 ${cardInnerHtml}
