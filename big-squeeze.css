@@ -305,6 +305,22 @@ button,
   gap: 15px; 
 }
 
+/* Card Cover Image Styling */
+.card-content-stack.has-cover-image,
+.card-content-split.has-cover-image {
+  background-image: linear-gradient(
+                      rgba(255, 255, 255, 0.82), 
+                      rgba(255, 255, 255, 0.88)
+                    ), 
+                    var(--card-cover);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 12px;
+  padding: 10px;
+  margin: -5px; /* Ensures the cover reaches the inner edges cleanly */
+}
+
 /* Container for the bottom row of the event card */
 .card-bottom-row {
     display: flex;
