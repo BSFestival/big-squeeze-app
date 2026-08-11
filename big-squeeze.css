@@ -369,14 +369,16 @@ button,
     margin-top: 10px;
     gap: 10px;
     width: 100%;
+    min-height: 48px;               /* Matches .g-btn height to keep card dimensions uniform */
 }
 
 .card-actions { 
   display: flex; 
   gap: 15px; 
-  margin-top: 12px; 
+  margin-top: 0;                   /* Handled by .card-bottom-row margin */
   justify-content: flex-end; 
   width: 100%; 
+  min-height: 48px;                /* Ensures empty button wrapper preserves height */
 }
 
 .ca-inline { 
