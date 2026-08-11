@@ -266,27 +266,11 @@ button,
   box-shadow: 0 4px 8px rgba(0,0,0,0.12); 
 }
 
-.card-cover {
-  background: url('images/cards/mint.jpg');
-  height: 450;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  overflow: hidden;
-}
-
 .card-title { 
   font-size: 1.2em; 
   font-weight: bold; 
   margin: 5px 0; 
   color: var(--thyme); 
-}
-
-.card-title-i { 
-  font-size: 1.2em; 
-  font-weight: bold; 
-  margin: 5px 0; 
-  color: var(--salt); 
 }
 
 .time { 
