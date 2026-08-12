@@ -79,11 +79,7 @@ h2 {
 }
 
 .load-text {
-  display: flex; 
-  margin: 0 auto;
-  justify-content: center; 
-  align-items: center; 
-  padding: 30px; 
+  margin-top: 15px; 
   color: var(--thyme);
   font-size: 1em;
   font-weight: bold;
@@ -837,13 +833,15 @@ button,
   opacity: 0 !important;
 }
 
-/* Loading Spinner */
+/* Loading Spinner Container */
 .spinner { 
   display: flex; 
+  flex-direction: column; /* Stacks spinning image above text */
+  align-items: center;    /* Centers image & text horizontally */
+  justify-content: center;/* Centers vertically within container */
+  padding: 40px 20px; 
   margin: 0 auto;
-  justify-content: center; 
-  align-items: center; 
-  padding: 30px; 
+  text-align: center;
 }
 
 .spin-img { 
