@@ -85,13 +85,77 @@
         </div>
 
         <div id="info-screen" class="tab-content hidden">
-            <span class="screen-title">Festival Information</span>
+            <div class="screen-title center">Information</div>
             <div id="lemmy-lemonade" class="character-r"><img src="./images/character/lemmy-thumbsup-512.webp" width="25%" alt="" /></div>
-            <div id="all-food"></div>
-            <div id="all-amenities"></div>
+        
+            <div class="accordion-container">
+                <!-- 1. GENERAL INFORMATION (AMENITIES) -->
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>General Information</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-panel">
+                        <div class="panel-content" id="panel-amenities">
+                            <!-- Dynamic content loaded from dbAmenities -->
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- 2. FOOD OPTIONS -->
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Food Options</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-panel">
+                        <div class="panel-content" id="panel-food">
+                            <!-- Dynamic content loaded from dbFood -->
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- 3. FAQS (HARDCODED) -->
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>FAQs</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-panel">
+                        <div class="panel-content">
+                            <div class="faq-item">
+                                <strong>Q: Where can I park for the festival?</strong>
+                                <p>Parking is available at designated public lots in both Parsons and Decaturville. Follow event signage upon arrival.</p>
+                            </div>
+                            <div class="faq-item">
+                                <strong>Q: Are pets allowed?</strong>
+                                <p>Leashed pets are welcome in outdoor common areas, but please check specific vendor locations for individual restrictions.</p>
+                            </div>
+                            <div class="faq-item">
+                                <strong>Q: What happens if it rains?</strong>
+                                <p>The festival runs rain or shine! In the case of severe weather, updates will be posted to the News feed.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+            <!-- 4. GET INVOLVED (HARDCODED) -->
+            <div class="accordion-item">
+                <button class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Get Involved</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-panel">
+                    <div class="panel-content">
+                        <h3>Become a Vendor or Sponsor</h3>
+                        <p>Interested in joining the Big Squeeze Festival as a food vendor, lemonade stand host, or local business sponsor?</p>
+                        <p>We’d love to collaborate with you! Contact our organizing committee to learn about booth availability, volunteer opportunities, and sponsorship packages.</p>
+                        <p><strong>Email:</strong> info@bigsqueezefestival.org</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
         <nav class="bottom-nav">
          <div class="tab-link active" id="nav-home" onclick="switchTab('home')">
             <span class="tab-icon material-symbols-outlined md-48" aria-hidden="true">home</span>
