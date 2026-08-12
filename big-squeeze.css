@@ -192,7 +192,7 @@ button,
   width: calc(100% - 32px); 
   max-width: 500px; 
   height: 64px; 
-  background: color-mix(in srgb, var(--salt) 50%, transparent);
+  background: color-mix(in srgb, var(--salt) 40%, transparent);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   backdrop-filter: blur(12px) saturate(180%);
   border-radius: 32px;
