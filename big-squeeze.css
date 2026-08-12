@@ -239,23 +239,21 @@ button,
   margin-bottom: 2px; 
 }
 
-/* Active Tab Pill/Circle Indicator */
+/* Active Tab Floating Circle Indicator */
 #nav-indicator { 
   position: absolute; 
   top: 50%;
   left: 0; 
-  height: 48px;                      /* Scaled inside the 64px nav bar */
-  width: 20%;                        /* 1/5th width for 5 tabs */
-  background-color: var(--mango);    /* --mango lemon color */
-  
-  /* Organic Lemon Shape (Pointed top-left & bottom-right tips) */
-  border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
-  
-  z-index: 1;                        /* Sits behind icons */
-  transform: translateY(-50%) translateX(0) rotate(-10deg); /* Slight tilt for mascot feel */
+  height: 44px;
+  width: 44px;                       /* Fixed circle dimensions */
+  left: calc(10% - 22px);           /* Centers circle in 20% column */
+  background-color: var(--mango);
+  border-radius: 50%;                /* Perfect circle */
+  z-index: 1;
+  transform: translateY(-50%) translateX(0);
   transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1); 
-  pointer-events: none;              /* Allows taps to pass through to tab links */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); /* Subtle pop off the nav bar */
+  pointer-events: none;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
 /* ==========================================================================
