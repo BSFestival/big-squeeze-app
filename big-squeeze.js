@@ -660,18 +660,21 @@ document.querySelectorAll('.tab-content').forEach(s => {
     const navBtn = document.getElementById(`nav-${target}`);
     if (navBtn) navBtn.classList.add('active');
 
-// 5. Sliding Indicator Tracking
-const indicator = document.getElementById('nav-indicator');
-if (indicator) {
-    const tabPositions = { 'home': 0, 'events': 1, 'stands': 2, 'map': 3, 'info': 4 };
-    const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
-        // Keeps vertical centering & lemon tilt while sliding horizontally
+   // 5. Sliding Indicator Tracking
+   const indicator = document.getElementById('nav-indicator');
+    if (indicator) {
+        const tabPositions = {
+            'home': 0,
+            'events': 1,
+            'stands': 2,
+            'map': 3,
+            'info': 4
+        };
+        
+        const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
+        // Shifts by 100% of the wrapper's width (which is exactly 1/5th of the nav bar)
         indicator.style.transform = `translateY(-50%) translateX(${positionIndex * 100}%)`;
     }
-   const navBar = document.querySelector('.bottom-nav');
-   if (navBar) {
-     navBar.classList.remove('nav-hidden');
-   }
 }
 
 function switchDay(dateStr, event) {
