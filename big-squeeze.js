@@ -673,7 +673,7 @@ const indicator = document.getElementById('nav-indicator');
         
         const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
         // Keeps vertical centering & lemon tilt while sliding horizontally
-        indicator.style.transform = `translateY(-50%) translateX(${positionIndex * 100}%) rotate(-10deg)`;
+        indicator.style.transform = `translateY(-50%) translateX(${positionIndex * 100}%)`;
     }
    const navBar = document.querySelector('.bottom-nav');
    if (navBar) {
