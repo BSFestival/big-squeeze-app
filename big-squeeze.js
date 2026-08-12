@@ -662,16 +662,9 @@ document.querySelectorAll('.tab-content').forEach(s => {
 
 // 5. Sliding Indicator Tracking
 const indicator = document.getElementById('nav-indicator');
-    if (indicator) {
-        const tabPositions = {
-            'home': 0,
-            'events': 1,
-            'stands': 2,
-            'map': 3,
-            'info': 4
-        };
-        
-        const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
+if (indicator) {
+    const tabPositions = { 'home': 0, 'events': 1, 'stands': 2, 'map': 3, 'info': 4 };
+    const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
         // Keeps vertical centering & lemon tilt while sliding horizontally
         indicator.style.transform = `translateY(-50%) translateX(${positionIndex * 100}%)`;
     }
