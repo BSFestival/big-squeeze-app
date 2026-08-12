@@ -239,20 +239,29 @@ button,
   margin-bottom: 2px; 
 }
 
-/* Active Tab Floating Circle Indicator */
+/* Active Tab Floating Circle Wrapper (Occupies full 20% column) */
 #nav-indicator { 
   position: absolute; 
   top: 50%;
   left: 0; 
-  height: 44px;
-  width: 44px;                       /* Fixed circle dimensions */
-  left: calc(10% - 22px);           /* Centers circle in 20% column */
-  background-color: var(--mango);
-  border-radius: 50%;                /* Perfect circle */
+  height: 48px;
+  width: 20%;                        /* Matches 1/5th column width for 5 tabs */
   z-index: 1;
   transform: translateY(-50%) translateX(0);
   transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1); 
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;           /* Perfectly centers the circle in whatever column it slides to */
+}
+
+/* The actual visible circle inside the 20% slot */
+#nav-indicator::after {
+  content: '';
+  width: 44px;
+  height: 44px;
+  background-color: var(--mango);
+  border-radius: 50%;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
