@@ -510,6 +510,7 @@ function renderInformation() {
             foodContainer.innerHTML = `<p class="no-events">No food vendor options available yet.</p>`;
         } else {
             foodContainer.innerHTML = "";
+            // FIX: Changed b.title -> b.name
             const sortedFood = [...dbFood].sort((a, b) => a.name.localeCompare(b.name));
 
             sortedFood.forEach(item => {
