@@ -478,57 +478,76 @@ function renderNewsFeed() {
 }
 
 function renderInformation() {
-   // Food
-   const foodContainer = document.getElementById("all-food");
-    if (!foodContainer) return;
+    // 1. Render General Information (Amenities Table)
+    const amenitiesContainer = document.getElementById("panel-amenities");
+    if (amenitiesContainer) {
+        if (dbAmenities.length === 0) {
+            amenitiesContainer.innerHTML = `<p class="no-events">No general information posted yet.</p>`;
+        } else {
+            amenitiesContainer.innerHTML = "";
+            const sortedAmenities = [...dbAmenities].sort((a, b) => a.title.localeCompare(b.title));
 
-   if (dbFood.length === 0) {
-        foodContainer.innerHTML = `<p class="no-events">&nbsp;</p>`;
-        return;
+            sortedAmenities.forEach(item => {
+                const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
+                const imageHtml = item.image 
+                    ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="Amenity image" />` 
+                    : "";
+
+                amenitiesContainer.innerHTML += `
+                    <div class="card news-card">
+                        <div class="card-title news-card-title">${item.title}</div>
+                        ${imageHtml}
+                        <p class="dtl-desc news-card-desc">${item.content}</p>
+                    </div>`;
+            });
+        }
     }
 
-   foodContainer.innerHTML = `<h2>Food Options</h2>`;
-   const sortedFood = [...dbFood].sort((a, b) => a.name.localeCompare(b.title));
+    // 2. Render Food Options (Food Table)
+    const foodContainer = document.getElementById("panel-food");
+    if (foodContainer) {
+        if (dbFood.length === 0) {
+            foodContainer.innerHTML = `<p class="no-events">No food vendor options available yet.</p>`;
+        } else {
+            foodContainer.innerHTML = "";
+            const sortedFood = [...dbFood].sort((a, b) => a.name.localeCompare(b.name));
 
-   sortedFood.forEach(item => {
-     const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
-     const imageHtml = item.image 
-         ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="Amenities graphic" />` 
-         : "";
+            sortedFood.forEach(item => {
+                const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
+                const imageHtml = item.image 
+                    ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="Food image" />` 
+                    : "";
 
-     foodContainer.innerHTML += `
-         <div class="card news-card">
-             <div class="card-title news-card-title">${item.name}</div>
-             ${imageHtml}
-             <p class="dtl-desc news-card-desc">${item.descrip}</p>
-         </div>`;
-    });
-   
-   // Amenities 
-   const amenitiesContainer = document.getElementById("all-amenities");
-    if (!amenitiesContainer) return;
-
-   if (dbAmenities.length === 0) {
-        amenitiesContainer.innerHTML = `<p class="no-events">No amenities posted yet.</p>`;
-        return;
+                foodContainer.innerHTML += `
+                    <div class="card news-card">
+                        <div class="card-title news-card-title">${item.name}</div>
+                        ${imageHtml}
+                        <p class="dtl-desc news-card-desc">${item.descrip}</p>
+                    </div>`;
+            });
+        }
     }
+}
 
-   amenitiesContainer.innerHTML = `<h2>Amenities</h2>`;
-   const sortedAmenities = [...dbAmenities].sort((a, b) => a.title.localeCompare(b.title));
+// Interactive Accordion Panel Toggle Handler
+function toggleAccordion(headerBtn) {
+    const accordionItem = headerBtn.parentElement;
+    const panel = accordionItem.querySelector('.accordion-panel');
+    const isActive = accordionItem.classList.contains('active');
 
-   sortedAmenities.forEach(item => {
-     const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
-     const imageHtml = item.image 
-         ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="Amenities graphic" />` 
-         : "";
-
-     amenitiesContainer.innerHTML += `
-         <div class="card news-card">
-             <div class="card-title news-card-title">${item.title}</div>
-             ${imageHtml}
-             <p class="dtl-desc news-card-desc">${item.content}</p>
-         </div>`;
+    // Optional: Close all other open accordion panels (Single-accordion mode)
+    document.querySelectorAll('.accordion-item').forEach(item => {
+        item.classList.remove('active');
+        const p = item.querySelector('.accordion-panel');
+        if (p) p.style.maxHeight = null;
     });
+
+    // Toggle current clicked item
+    if (!isActive) {
+        accordionItem.classList.add('active');
+        // Calculate full scrollHeight so smooth transition expands correctly
+        panel.style.maxHeight = panel.scrollHeight + "px";
+    }
 }
 
 /* ==========================================================================
