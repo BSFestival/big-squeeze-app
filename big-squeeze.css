@@ -643,6 +643,85 @@ button,
   white-space: pre-wrap; 
 }
 
+.accordion-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.accordion-item {
+  border: 1px solid var(--avocado);
+  border-radius: 12px;
+  background-color: var(--mint);
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--mint);
+  color: var(--thyme);
+  border: none;
+  padding: 16px;
+  font-size: 1.15em;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.accordion-header:hover,
+.accordion-item.active .accordion-header {
+  background-color: var(--avocado);
+  color: var(--salt);
+}
+
+.accordion-icon {
+  font-size: 1.3em;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .accordion-icon {
+  transform: rotate(45deg); /* Turns the '+' into an 'x' when opened */
+}
+
+/* Collapsible Panel Drawer */
+.accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+  background-color: var(--banana);
+}
+
+.accordion-item.active .accordion-panel {
+  opacity: 1;
+}
+
+.panel-content {
+  padding: 16px;
+  line-height: 1.5;
+  color: var(--thyme);
+}
+
+.faq-item {
+  margin-bottom: 14px;
+}
+
+.faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq-item p {
+  margin: 4px 0 0 0;
+}
+
 /* ==========================================================================
    8. MEDIA & FEATURE-SPECIFIC COMPONENTS
    ========================================================================== */
