@@ -96,10 +96,6 @@ h2 {
 .left { text-align: left; }
 .right { text-align: right; }
 
-/* ==========================================================================
-   NATIVE APP-LIKE TOUCH & SELECTION RESETS
-   ========================================================================== */
-
 /* Disable gray tap highlight box on mobile webkit browsers */
 * {
   -webkit-tap-highlight-color: transparent;
@@ -111,10 +107,10 @@ button,
 .tab-link,
 .day-btn,
 .town-btn {
-  -webkit-touch-callout: none; /* Disable iOS callout menu on press-and-hold */
-  -webkit-user-select: none;   /* Disable text selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   user-select: none;
-  touch-action: manipulation;  /* Eliminates 300ms tap delay on mobile devices */
+  touch-action: manipulation;
 }
 
 /* ==========================================================================
@@ -123,8 +119,7 @@ button,
 .container { 
   max-width: 600px; 
   margin: auto; 
-  padding: 15px; 
-  padding-bottom: 20px; 
+  padding: 15px 15px 20px 15px; 
   height: auto; 
   display: flex; 
   flex-direction: column; 
@@ -139,7 +134,6 @@ button,
   padding-bottom: 20px; 
 }
 
-/* Ensure tab contents hide cleanly when inactive */
 .tab-content.hidden {
   display: none !important;
 }
@@ -157,15 +151,7 @@ button,
 }
 
 #stands-screen, 
-.stands-screen { 
-  position: relative; 
-}
-
-#amenities-screen, 
-.amenities-screen { 
-  position: relative; 
-}
-
+.stands-screen,
 #events-screen, 
 .events-screen { 
   position: relative; 
@@ -182,7 +168,6 @@ button,
 /* ==========================================================================
    4. NAVIGATION COMPONENTS
    ========================================================================== */
-/* Floating Modern Bar */
 .bottom-nav { 
   position: fixed; 
   bottom: 20px; 
@@ -201,22 +186,20 @@ button,
               0 8px 10px -6px rgba(0, 0, 0, 0.1);
   display: flex; 
   z-index: 1000; 
-  justify-space-around: space-around; 
   align-items: center; 
-  overflow: hidden; /* Clips children (like sliding indicator) inside pill radius */
+  overflow: hidden;
   margin-bottom: env(safe-area-inset-bottom, 0px);
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
 }
 
-/* Hidden state: slides the bar completely below the viewport */
 .bottom-nav.nav-hidden {
-  /* Translates down off-screen (100px is enough to clear the 64px height + bottom margins) */
   transform: translateY(120px); 
 }
 
 .tab-link { 
   position: relative;
-  z-index: 2;                        /* Ensures icon and text stay on top of the indicator */
+  z-index: 2;
   flex: 1; 
   height: 100%;
   display: flex; 
@@ -239,23 +222,24 @@ button,
   margin-bottom: 2px; 
 }
 
-/* Active Tab Floating Circle Wrapper (Occupies full 20% column) */
+/* Active Tab Circle Indicator Container */
 #nav-indicator { 
   position: absolute; 
   top: 50%;
   left: 0; 
   height: 48px;
-  width: 20%;                        /* Matches 1/5th column width for 5 tabs */
+  width: 20%;
   z-index: 1;
   transform: translateY(-50%) translateX(0);
   transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1); 
   pointer-events: none;
   display: flex;
   align-items: center;
-  justify-content: center;           /* Perfectly centers the circle in whatever column it slides to */
+  justify-content: center;
+  will-change: transform;
 }
 
-/* The actual visible circle inside the 20% slot */
+/* Active Circle */
 #nav-indicator::after {
   content: '';
   width: 44px;
@@ -299,7 +283,6 @@ button,
   gap: 4px; 
 }
 
-/* Layout Modifiers Inside Cards */
 .card-text-block { flex: 1; }
 
 .card-content-stack { 
@@ -316,20 +299,18 @@ button,
   gap: 15px; 
 }
 
-/* Apply background image directly to card container with 10% dark overlay */
+/* Card Cover Image Styling */
 .card.has-cover-image {
   background-image: linear-gradient(
                       rgba(0, 0, 0, 0.10), 
                       rgba(0, 0, 0, 0.10)
                     ), 
                     var(--card-cover) !important;
-  /* Keeps image scaled relative to top width so opening the drawer won't zoom the photo */
   background-size: 100% auto !important;
   background-position: top center !important;
   background-repeat: no-repeat !important;
 }
 
-/* Force all inner wrappers to be transparent */
 .card.has-cover-image .card-content-stack,
 .card.has-cover-image .card-content-split,
 .card.has-cover-image .card-text-block,
@@ -338,59 +319,49 @@ button,
   background-color: transparent !important;
 }
 
-/* Text color overrides for cover image cards */
 .card.has-cover-image .card-title,
 .card.has-cover-image .time,
 .card.has-cover-image .location {
   color: var(--salt) !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); /* Subtle text shadow for extra punch over bright areas */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
-/* Ensure location pin/town icons stay legible on cover cards */
-.card.has-cover-image .location {
-  color: var(--salt) !important;
-}
-
-/* Ensure expanded details drawer gets a solid background overlay when opened */
 .card.has-cover-image .expanded-details {
   background-color: var(--mint) !important;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
-  margin: 0 -15px 0 -15px; /* Zero out top/bottom margins when hidden */
+  margin: 0 -15px 0 -15px;
   transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-in-out, margin 0.3s ease;
 }
 
-/* Active open drawer state (applies margin only when expanded) */
 .card.has-cover-image .expanded-details.show {
   margin: 15px -15px -15px -15px;
   padding: 15px;
 }
 
-/* Reset expanded details inner text back to dark standard color */
 .card.has-cover-image .expanded-details h3,
 .card.has-cover-image .expanded-details .dtl-desc {
   color: var(--thyme) !important;
   text-shadow: none !important;
 }
 
-/* Container for the bottom row of the event card */
 .card-bottom-row {
-    display: flex;
-    align-items: center;            /* Centers thumbnail & buttons vertically */
-    justify-content: space-between; /* Pushes image left, buttons right */
-    margin-top: 10px;
-    gap: 10px;
-    width: 100%;
-    min-height: 48px;               /* Matches .g-btn height to keep card dimensions uniform */
+  display: flex;
+  align-items: center;            
+  justify-content: space-between; 
+  margin-top: 10px;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;               
 }
 
 .card-actions { 
   display: flex; 
   gap: 15px; 
-  margin-top: 0;                   /* Handled by .card-bottom-row margin */
+  margin-top: 0;                   
   justify-content: flex-end; 
   width: 100%; 
-  min-height: 48px;                /* Ensures empty button wrapper preserves height */
+  min-height: 48px;                
 }
 
 .ca-inline { 
@@ -415,13 +386,13 @@ button,
 }
 
 .news-card-title {
-    margin-top: 5px;
-    margin-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .news-card-desc {
-    margin: 0;
-    padding-top: 5px;
+  margin: 0;
+  padding-top: 5px;
 }
 
 /* ==========================================================================
@@ -461,7 +432,7 @@ button,
   display: block; 
 }
 
-/* Pure CSS Blue Plus/Minus Toggle Button */
+/* Pure CSS Plus/Minus Toggle Button */
 .plus-btn::before, 
 .plus-btn::after { 
   content: ''; 
@@ -473,9 +444,9 @@ button,
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.plus-btn::before { transform: rotate(0deg); } /* Horizontal */
-.plus-btn::after { transform: rotate(90deg); }  /* Vertical */
-.plus-btn.active::after { transform: rotate(180deg); } /* Rotates to minus */
+.plus-btn::before { transform: rotate(0deg); }
+.plus-btn::after { transform: rotate(90deg); }  
+.plus-btn.active::after { transform: rotate(180deg); } 
 
 /* Day Switcher Bar */
 .day-filter-container { 
@@ -483,8 +454,7 @@ button,
   top: 0; 
   background-color: var(--banana); 
   z-index: 20; 
-  padding-top: 10px; 
-  padding-bottom: 10px; 
+  padding: 10px 0; 
   display: flex; 
   gap: 10px; 
   width: 100%; 
@@ -501,7 +471,6 @@ button,
   font-weight: bold; 
   cursor: pointer; 
   font-size: 1.2em; 
-  /* box-shadow: 0 4px 8px rgba(0,0,0,0.12); */
 }
 
 .day-btn.active { 
@@ -528,11 +497,9 @@ button,
   width: 100%;
 }
 
-/* Slider Position Labels */
-/* Precise 3-Column Grid for Town Slider Labels */
 .town-slider-labels {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* 3 equal sections matching the slider track */
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: baseline;   
   font-size: 1em;
   font-weight: bold;
@@ -540,18 +507,9 @@ button,
   padding: 0 4px;
 }
 
-/* Align Left label to the start, Center label dead center, Right label to the end */
-#label-parsons {
-  text-align: left;
-}
-
-#label-all {
-  text-align: center;
-}
-
-#label-decaturville {
-  text-align: right;
-}
+#label-parsons { text-align: left; }
+#label-all { text-align: center; }
+#label-decaturville { text-align: right; }
 
 .town-slider-labels span {
   cursor: pointer;
@@ -564,7 +522,6 @@ button,
   font-size: 1.25em;
 }
 
-/* Custom Styled Range Input */
 #town-range-slider {
   -webkit-appearance: none;
   appearance: none;
@@ -577,7 +534,6 @@ button,
   box-sizing: border-box;
 }
 
-/* Slider Track Thumb (iOS / Chrome / Safari) */
 #town-range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -595,7 +551,6 @@ button,
   transform: scale(1.15);
 }
 
-/* Slider Track Thumb (Firefox) */
 #town-range-slider::-moz-range-thumb {
   width: 18px;
   height: 40px;
@@ -607,9 +562,8 @@ button,
 }
 
 /* ==========================================================================
-   7. OVERLAYS & DRAWERS (Dropdowns & Expandables)
+   7. OVERLAYS & DRAWERS (Dropdowns, Accordions & Expandables)
    ========================================================================== */
-/* Expandable Details Drawer */
 .expanded-details { 
   max-height: 0; 
   overflow: hidden; 
@@ -646,6 +600,7 @@ button,
   white-space: pre-wrap; 
 }
 
+/* Info Screen Accordion */
 .accordion-container {
   display: flex;
   flex-direction: column;
@@ -691,10 +646,9 @@ button,
 }
 
 .accordion-item.active .accordion-icon {
-  transform: rotate(45deg); /* Turns the '+' into an 'x' when opened */
+  transform: rotate(45deg);
 }
 
-/* Collapsible Panel Drawer */
 .accordion-panel {
   max-height: 0;
   overflow: hidden;
@@ -728,11 +682,10 @@ button,
 /* ==========================================================================
    8. MEDIA & FEATURE-SPECIFIC COMPONENTS
    ========================================================================== */
-/* Smooth Screen Fade-In Animation */
 @keyframes tabFadeIn {
   from {
     opacity: 0;
-    transform: translateY(4px); /* Slight subtle slide-up effect */
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
@@ -744,10 +697,8 @@ button,
   animation: tabFadeIn 0.25s ease-out forwards;
 }
 
-/* Map Screen Full-Viewport Container */
 #map-screen {
   width: 100%;
-  /* Fallback for older browsers + modern dynamic viewport calculation */
   min-height: calc(100vh - 105px);
   min-height: calc(100dvh - 105px); 
   display: flex;
@@ -756,14 +707,14 @@ button,
 }
 
 #map-screen:not(.hidden) {
-  display: flex !important; /* Ensures flex layout applies when active tab */
+  display: flex !important;
 }
 
 .map-responsive {
   position: relative;
   width: 100%;
-  height: calc(100dvh - 125px); /* Explicit dynamic height forcing iframe visibility */
-  min-height: 495px;           /* Safety floor so map never collapses */
+  height: calc(100dvh - 125px);
+  min-height: 495px;           
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   margin-bottom: 10px;
@@ -779,7 +730,6 @@ button,
   border: 0;
 }
 
-/* Images & News Floats */
 .responsive { width: 100%; height: auto; }
 .dtl-image { display: flex; justify-content: center; }
 
@@ -793,30 +743,18 @@ button,
 .news-float-l { float: left; margin-right: 12px; }
 .news-float-r { float: right; margin-left: 12px; }
 
-/* Lemmy Mascot Anchor */
-#lemmy-lemonade { 
+#lemmy-lemonade,
+#lemmy-events { 
   position: absolute; 
   top: -18px; 
   right: 10px; 
-  z-index: 100; 
+  z-index: 5; 
   width: 80px; 
 }
 
-#lemmy-lemonade img { 
-  width: 100%; 
-  height: auto; 
-  display: block; 
-}
+#lemmy-lemonade { z-index: 100; }
 
-/* Event screen Lemmy positioning */
-#lemmy-events { 
-  position: absolute; 
-  top: -18px; /* Matches your stands/amenities offset */
-  right: 10px; 
-  z-index: 5;  /* Lower than sticky bar (20), but above body text */
-  width: 80px; 
-}
-
+#lemmy-lemonade img,
 #lemmy-events img { 
   width: 100%; 
   height: auto; 
@@ -826,12 +764,10 @@ button,
 /* ==========================================================================
    9. UTILITIES & ANIMATIONS
    ========================================================================== */
-
 .no-border { border-style: none; padding-bottom: 0; }
 .dtl-btn { padding-right: 20px; }
 .no-events { text-align: center; color: var(--thyme); font-style: italic; padding: 20px; }
 
-/* Force hide all hidden utilities and active overlays */
 .hidden, 
 .tab-content.hidden,
 #loading-screen.hidden { 
@@ -840,20 +776,19 @@ button,
   opacity: 0 !important;
 }
 
-/* Loading Spinner Container */
 .spinner { 
   display: flex; 
-  flex-direction: column; /* Stacks spinning image above text */
-  align-items: center;    /* Centers image & text horizontally */
-  justify-content: center;/* Centers vertically within container */
+  flex-direction: column;
+  align-items: center;    
+  justify-content: center;
   padding: 40px 20px; 
   margin: 0 auto;
   text-align: center;
 }
 
 .spin-img { 
-  display: block; 
   animation: lemonRotation 2s linear infinite; 
+  will-change: transform;
 }
 
 @keyframes lemonRotation {
