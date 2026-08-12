@@ -501,6 +501,15 @@ function renderInformation() {
                     </div>`;
             });
         }
+        // Automatically expand any accordion item that starts with the 'active' class
+        const activeItem = document.querySelector('.accordion-item.active');
+        if (activeItem) {
+            const activePanel = activeItem.querySelector('.accordion-panel');
+            if (activePanel) {
+                // Recalculate panel height so it expands smoothly on initial load
+                activePanel.style.maxHeight = activePanel.scrollHeight + "px";
+            }
+        }       
     }
 
     // 2. Render Food Options (Food Table)
