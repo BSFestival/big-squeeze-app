@@ -127,28 +127,30 @@ async function initDatabaseApp() {
         const baseMapUrl = params["Loc_Map_URL"] ? params["Loc_Map_URL"].trim() : "https://maps.google.com/maps?q=";        
 
         // Build Location Records
-        rawLocations.forEach(row => {
-            if (row.Loc_ID) {
-                const lat = row.Loc_Lat ? row.Loc_Lat.trim() : "";
-                const long = row.Loc_Long ? row.Loc_Long.trim() : "";
-                const zoom = row.Zoom_Level ? row.Zoom_Level.trim() : "15";
-
-                let constructedMapUrl = "#";
-                if (lat !== "" && long !== "") {
-                    constructedMapUrl = `${baseMapUrl}&ll=${lat}%2C${long}&z=${zoom}&q=${lat},${long}`;
-                }
-
-                dbLocations[row.Loc_ID.trim()] = {
-                    name: row.Loc_Name ? row.Loc_Name.trim() : "To Be Determined",
-                    town: row.Loc_Town ? row.Loc_Town.trim() : "Unknown",
-                    latitude: lat,
-                    longitude: long,
-                    zoom: zoom,
-                    mapUrl: constructedMapUrl 
-                };
-            }
-        });
-        
+      rawLocations.forEach(row => {
+          if (row.Loc_ID) {
+              const lat = row.Loc_Lat ? row.Loc_Lat.trim() : "";
+              const long = row.Loc_Long ? row.Loc_Long.trim() : "";
+              const zoom = row.Zoom_Level ? row.Zoom_Level.trim() : "15";
+      
+              let constructedMapUrl = "#";
+      
+              if (lat !== "" && long !== "") {
+                  // output=embed forces the iframe to load and reposition the interactive map
+                  constructedMapUrl = `https://maps.google.com/maps?q=${lat},${long}&z=${zoom}&output=embed`;
+              }
+      
+              dbLocations[row.Loc_ID.trim()] = {
+                  name: row.Loc_Name ? row.Loc_Name.trim() : "To Be Determined",
+                  town: row.Loc_Town ? row.Loc_Town.trim() : "Unknown",
+                  latitude: lat,
+                  longitude: long,
+                  zoom: zoom,
+                  mapUrl: constructedMapUrl 
+              };
+          }
+      });        
+       
         // Build Detail Records
         rawDetails.forEach(row => {
             if (row.Detail_ID) {
@@ -578,8 +580,12 @@ function openLocationInAppMap(mapUrl) {
     if (!mapUrl || mapUrl === '#') return;
 
     const mapIframe = document.getElementById('default-map');
-    if (mapIframe) mapIframe.src = mapUrl;
+    if (mapIframe) {
+        // Force iframe update
+        mapIframe.src = mapUrl;
+    }
 
+    // Switch to Map Screen
     switchTab('map');
 }
 
