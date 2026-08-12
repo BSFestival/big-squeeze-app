@@ -502,14 +502,16 @@ function renderInformation() {
             });
         }
         // Automatically expand any accordion item that starts with the 'active' class
-        const activeItem = document.querySelector('.accordion-item.active');
-        if (activeItem) {
-            const activePanel = activeItem.querySelector('.accordion-panel');
-            if (activePanel) {
-                // Recalculate panel height so it expands smoothly on initial load
-                activePanel.style.maxHeight = activePanel.scrollHeight + "px";
+        // Recalculate active panel height after DOM updates
+        setTimeout(() => {
+            const activeItem = document.querySelector('.accordion-item.active');
+            if (activeItem) {
+                const activePanel = activeItem.querySelector('.accordion-panel');
+                if (activePanel && activePanel.scrollHeight > 0) {
+                    activePanel.style.maxHeight = activePanel.scrollHeight + "px";
+                }
             }
-        }       
+        }, 100);
     }
 
     // 2. Render Food Options (Food Table)
@@ -628,7 +630,7 @@ function openLocationInAppMap(mapUrl) {
 }
 
 function switchTab(target) {
-    document.querySelectorAll('.tab-content').forEach(s => {
+document.querySelectorAll('.tab-content').forEach(s => {
         s.classList.add('hidden');
         s.classList.remove('animate-fade');
     });
@@ -643,6 +645,18 @@ function switchTab(target) {
         window.scrollTo({ top: 0, behavior: 'instant' }); 
     }
     
+    // RECALCULATE ACCORDION HEIGHT WHEN INFO TAB BECOMES VISIBLE
+    if (target === 'info') {
+        setTimeout(() => {
+            const activeItem = document.querySelector('.accordion-item.active');
+            if (activeItem) {
+                const activePanel = activeItem.querySelector('.accordion-panel');
+                if (activePanel) {
+                    activePanel.style.maxHeight = activePanel.scrollHeight + "px";
+                }
+            }
+        }, 50);
+    }    
     const navBtn = document.getElementById(`nav-${target}`);
     if (navBtn) navBtn.classList.add('active');
 
