@@ -17,13 +17,23 @@ let dbEvents = [];
 let dbStands = [];
 let dbLocations = {}; 
 let dbDetails = {};
-let dbParams = [];
 let dbNews = [];
 let dbAmenities = [];
 let dbFood = [];
 let selectedDayString = ""; 
-let selectedTownFilter = "ALL"; // State tracker for town filter
+let selectedTownFilter = "ALL";
 let scheduleRefreshTimer = null;
+
+// Utility function to escape HTML special characters
+function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
 /* ==========================================================================
    3. APP INITIALIZATION & CSV PARSING
@@ -53,7 +63,7 @@ async function initDatabaseApp() {
             fetchAndParseCsv(URL_FOOD)
         ]);
 
-        // Load parameters from database
+        // Load parameters into key-value map
         const params = {};
         rawParams.forEach(row => {
             if (row.Param_Key) {
@@ -82,53 +92,41 @@ async function initDatabaseApp() {
 
         // DOM Parameter Overrides
         if (params["App_Title"]) {
-            document.querySelector("#header h1").innerText = params["App_Title"];
+            const headerH1 = document.querySelector("#header h1");
+            if (headerH1) headerH1.innerText = params["App_Title"];
             document.title = params["App_Title"];
         }
+
         if (params["Welcome_Hero"]) {
-             const heroOptions = params["Welcome_Hero"].split('|').map(opt => opt.trim()).filter(opt => opt !== "");
-         
-             if (heroOptions.length > 0) {
-                 const randomIndex = Math.floor(Math.random() * heroOptions.length);
-                 const selectedHeroText = heroOptions[randomIndex];
-         
-                 const heroElem = document.querySelector("#home-screen .hero-text");
-                 if (heroElem) {
-                     heroElem.innerText = selectedHeroText;
-                 }
-             }
-         }
+            const heroOptions = params["Welcome_Hero"].split('|').map(opt => opt.trim()).filter(Boolean);
+            if (heroOptions.length > 0) {
+                const selectedHeroText = heroOptions[Math.floor(Math.random() * heroOptions.length)];
+                const heroElem = document.querySelector("#home-screen .hero-text");
+                if (heroElem) heroElem.innerText = selectedHeroText;
+            }
+        }
+
         if (params["Default_Map_URL"]) {
             const mainMapIframe = document.getElementById("default-map");
-            if (mainMapIframe) {
-                mainMapIframe.src = params["Default_Map_URL"];
-            }
+            if (mainMapIframe) mainMapIframe.src = params["Default_Map_URL"];
         }
 
         // Cache Refresh Timer Setup
-        let refreshRate = 300000; // 5 minutes fallback default
+        let refreshRate = 300000; // 5 minute default fallback
         if (params["Refresh_Interval_MS"]) {
             const parsedRate = parseInt(params["Refresh_Interval_MS"].trim(), 10);
-            if (!isNaN(parsedRate) && parsedRate > 0) {
-                refreshRate = parsedRate;
-            }
+            if (!isNaN(parsedRate) && parsedRate > 0) refreshRate = parsedRate;
         }
 
-        if (scheduleRefreshTimer) {
-            clearInterval(scheduleRefreshTimer);
-        }
-
+        if (scheduleRefreshTimer) clearInterval(scheduleRefreshTimer);
         scheduleRefreshTimer = setInterval(() => {
-            console.log(`Recalculating timelines based on device clock every ${refreshRate}ms...`);
+            console.log(`Recalculating timelines every ${refreshRate}ms...`);
             processAllSchedules();
         }, refreshRate);
         
-        // Determine Google Maps Base URL from Params (with a safety fallback)
-        const baseMapUrl = params["Loc_Map_URL"] 
-            ? params["Loc_Map_URL"].trim() 
-            : "https://maps.google.com/maps?q=";        
+        const baseMapUrl = params["Loc_Map_URL"] ? params["Loc_Map_URL"].trim() : "https://maps.google.com/maps?q=";        
 
-       // Build Location Records & Construct Dynamic Map URLs
+        // Build Location Records
         rawLocations.forEach(row => {
             if (row.Loc_ID) {
                 const lat = row.Loc_Lat ? row.Loc_Lat.trim() : "";
@@ -136,7 +134,6 @@ async function initDatabaseApp() {
                 const zoom = row.Zoom_Level ? row.Zoom_Level.trim() : "15";
 
                 let constructedMapUrl = "#";
-
                 if (lat !== "" && long !== "") {
                     constructedMapUrl = `${baseMapUrl}&ll=${lat}%2C${long}&z=${zoom}&q=${lat},${long}`;
                 }
@@ -152,8 +149,9 @@ async function initDatabaseApp() {
             }
         });
         
+        // Build Detail Records
         rawDetails.forEach(row => {
-            if(row.Detail_ID) {
+            if (row.Detail_ID) {
                 let processedDesc = row.Detail_Descrip ? row.Detail_Descrip.trim() : "";
                 processedDesc = processedDesc.replace(/\n/g, "<br>");
                 
@@ -166,6 +164,7 @@ async function initDatabaseApp() {
             }
         });
 
+        // Build Events Array
         dbEvents = rawEvents.map(row => {
             const locId = row.Event_Loc_ID ? row.Event_Loc_ID.trim() : "";
             const DtlId = row.Event_Details_ID ? row.Event_Details_ID.trim() : "";
@@ -185,6 +184,7 @@ async function initDatabaseApp() {
             };
         });
 
+        // Build Stands Array
         dbStands = rawStands.map(row => {
             const locId = row.Stand_Loc_ID ? row.Stand_Loc_ID.trim() : "";
             return {
@@ -196,6 +196,7 @@ async function initDatabaseApp() {
             };
         });
 
+        // Build News Feed Array
         dbNews = rawNews.map(row => {
             let processedContent = row.News_Content ? row.News_Content.trim() : "";
             processedContent = processedContent.replace(/\n/g, "<br>"); 
@@ -209,6 +210,7 @@ async function initDatabaseApp() {
             };
         });
 
+        // Build Amenities Array
         dbAmenities = rawAmenities.map(row => {
             const locId = row.Amenity_Loc_ID ? row.Amenity_Loc_ID.trim() : "";
             let processedContent = row.Amenity_Desc ? row.Amenity_Desc.trim() : "";
@@ -225,6 +227,7 @@ async function initDatabaseApp() {
             };
         });
 
+        // Build Food Vendor Array
         dbFood = rawFood.map(row => {
             let processedContent = row.Food_Desc ? row.Food_Desc.trim() : "";
             processedContent = processedContent.replace(/\n/g, "<br>"); 
@@ -233,7 +236,7 @@ async function initDatabaseApp() {
                 name: row.Food_Name ? row.Food_Name.trim() : "",
                 descrip: processedContent,
                 image: row.Food_Image ? row.Food_Image.trim() : "",
-                imageLoc: row.Food_Img_Loc ? row.Food_Image_Loc.trim().toUpperCase() : "L"
+                imageLoc: row.Food_Img_Loc ? row.Food_Img_Loc.trim().toUpperCase() : "L"
             };
         });
 
@@ -243,17 +246,14 @@ async function initDatabaseApp() {
         renderInformation();
         switchTab('home');
 
-        // Hide Loading Screen Container
+        // Hide Loading Screen
         const loadingElem = document.getElementById("loading-screen") || document.querySelector(".spinner");
-        if (loadingElem) {
-            loadingElem.classList.add("hidden");
-        }
+        if (loadingElem) loadingElem.classList.add("hidden");
 
-       
-        
     } catch (err) {
         console.error("Database initialization processing crash failure:", err);
-        document.getElementById("all-events").innerText = "Failed to sync remote database entries.";
+        const allEvents = document.getElementById("all-events");
+        if (allEvents) allEvents.innerText = "Failed to sync remote database entries.";
     }
 }
 
@@ -275,7 +275,6 @@ function processAllSchedules() {
     
     renderCards(filteredEvents, "all-events", "No events scheduled for this day.", false);
 
-    // Apply Town Filtering to Lemonade Stands
     let filteredStands = [...dbStands];
     if (selectedTownFilter !== "ALL") {
         filteredStands = filteredStands.filter(s => s.town.toLowerCase() === selectedTownFilter.toLowerCase());
@@ -283,43 +282,34 @@ function processAllSchedules() {
 
     const sortedStands = filteredStands.sort((a, b) => a.name.localeCompare(b.name));
     
-    // Count & append stands total to header
     const standsHeader = document.getElementById("stands-header-title");
     if (standsHeader) {
-        const countLabel = selectedTownFilter === "ALL" 
-            ? `${sortedStands.length} Lemonade Stands` 
-            : `${sortedStands.length}  Lemonade Stands`;
-        standsHeader.innerText = countLabel;
+        standsHeader.innerText = `${sortedStands.length} Lemonade Stands`;
     }
     
     renderCards(sortedStands, "all-stands", `No lemonade stands found in ${selectedTownFilter}.`, false);
 }
 
-// Map numeric slider values (0, 1, 2) to town state strings
 const TOWN_SLIDER_MAP = {
     "0": "Parsons",
     "1": "ALL",
     "2": "Decaturville"
 };
 
-// Handles dragging or tapping the range slider track
 function handleTownSliderChange(val) {
-    const townName = TOWN_SLIDER_MAP[val] || "ALL";
-    selectedTownFilter = townName;
+    selectedTownFilter = TOWN_SLIDER_MAP[val] || "ALL";
 
-    // Update label active highlights
     const labelParsons = document.getElementById("label-parsons");
     const labelAll = document.getElementById("label-all");
     const labelDecaturville = document.getElementById("label-decaturville");
 
-    if (labelParsons) labelParsons.classList.toggle("active", val === "0" || val === 0);
-    if (labelAll) labelAll.classList.toggle("active", val === "1" || val === 1);
-    if (labelDecaturville) labelDecaturville.classList.toggle("active", val === "2" || val === 2);
+    if (labelParsons) labelParsons.classList.toggle("active", val == 0);
+    if (labelAll) labelAll.classList.toggle("active", val == 1);
+    if (labelDecaturville) labelDecaturville.classList.toggle("active", val == 2);
 
     processAllSchedules();
 }
 
-// Helper to snap slider position if user taps directly on a text label
 function setTownSlider(val) {
     const slider = document.getElementById("town-range-slider");
     if (slider) {
@@ -334,23 +324,18 @@ function setTownSlider(val) {
 function renderCards(list, elementId, emptyMsg, isLive) {
     const container = document.getElementById(elementId);
     if (!container) return;
-    container.innerHTML = "";
 
     if (list.length === 0) {
-        container.innerHTML = `<p class="no-events">${emptyMsg}</p>`;
+        container.innerHTML = `<p class="no-events">${escapeHtml(emptyMsg)}</p>`;
         return;
     }
 
-    list.forEach((item, index) => {
-        // Date & Time Engine
-        const hasDates = item.start && item.start.trim() !== "";
+    const cardsHtml = list.map((item, index) => {
+        const hasDates = Boolean(item.start && item.start.trim() !== "");
         const startD = hasDates ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "??";
         const startT = hasDates ? new Date(item.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
         
-        const indicator = isLive ? "" : "";
-        
-        // Details & Image Engine
         const itemDetails = item.details ? item.details.trim() : (item.content ? item.content.trim() : "");
         const itemImage = item.image ? item.image.trim() : "";
         const hasDetailsButton = (itemDetails !== "") || (itemImage !== "");
@@ -358,77 +343,60 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const isSharable = isEventsScreen && item.shareEvt && item.shareEvt.trim().toUpperCase() === "Y";
         const uniqueId = `${elementId}-details-${index}`;
         
-        // String Escaping
         const cardTitle = item.name || item.title || 'Unnamed';
-        const safeName = cardTitle.replace(/'/g, "\\'").replace(/"/g, '\\"');
-        const safeDetails = itemDetails.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/<br\s*\/?>/gi, '\n');
-        const safeStart = item.start || "";
-        const safeEnd = item.end || "";
-        const safeLoc = item.locationName ? item.locationName.replace(/'/g, "\\'").replace(/"/g, '\\"') : "Unknown Location";
-        const safeDetailsAttr = itemDetails.replace(/"/g, '&quot;').replace(/<br\s*\/?>/gi, ' ').replace(/\n/g, ' ');
-        const safeTitleAttr = cardTitle.replace(/"/g, '&quot;');
+        const safeDetailsAttr = escapeHtml(itemDetails.replace(/<br\s*\/?>/gi, ' '));
+        const safeTitleAttr = escapeHtml(cardTitle);
 
-        // Screen Context Checks
         const isStandsScreen = elementId === "all-stands" || elementId.includes("stands");
-        
         const inlineClass = isStandsScreen ? "ca-inline" : "";
 
-        // Cover Image Attributes
         const hasCover = Boolean(item.coverImage && item.coverImage.trim() !== "");
-        const coverStyle = hasCover ? `style="--card-cover: url('${item.coverImage.trim()}');"` : '';
+        const coverStyle = hasCover ? `style="--card-cover: url('${encodeURI(item.coverImage.trim())}');"` : '';
         const coverClass = hasCover ? 'has-cover-image' : '';
 
-        // Inner Card Template Builder
         let cardInnerHtml = "";
 
         if (isStandsScreen) {
-            // Side-by-Side Layout (Lemonade Stands)
             cardInnerHtml = `
                 <div class="card-content-split">
                     <div class="card-text-block">
-                        <div class="card-title">${cardTitle}</div>
-                        <div class="location">${item.locationName || 'Festival Grounds'}${item.town && item.town !== 'Unknown' ? `, ${item.town}` : ''}</div>
+                        <div class="card-title">${escapeHtml(cardTitle)}</div>
+                        <div class="location">${escapeHtml(item.locationName || 'Festival Grounds')}${item.town && item.town !== 'Unknown' ? `, ${escapeHtml(item.town)}` : ''}</div>
                     </div>
 
                     <div class="card-actions ca-inline">
-                        ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                        ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${encodeURI(item.mapUrl)}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                         ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
                     </div>
                 </div>`;
         } else {
-            // Stacked Layout with Bottom Row (Events)
             cardInnerHtml = `
                 <div class="card-content-stack">
                     <div class="card-text-block">
-                        <div class="card-title">${cardTitle}</div>
-                        ${(hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
-                        <div class="location">${item.locationName || 'Festival Grounds'}${item.town && item.town !== 'Unknown' ? `, ${item.town}` : ''}</div>
+                        <div class="card-title">${escapeHtml(cardTitle)}</div>
+                        ${(hasDates) ? `<span class="time">${startD} ${startT} - ${endT}</span>` : ''}
+                        <div class="location">${escapeHtml(item.locationName || 'Festival Grounds')}${item.town && item.town !== 'Unknown' ? `, ${escapeHtml(item.town)}` : ''}</div>
                     </div>
 
                     <div class="card-bottom-row">
                         <div class="card-actions ${inlineClass}">
-                            ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
-                                                       
+                            ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${encodeURI(item.mapUrl)}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                             ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
                         </div>
                     </div>
                 </div>`;
         }
 
-        // Apply coverClass and coverStyle to the OUTER card container
-        container.innerHTML += `
+        return `
             <div class="card highlight-shadow-box ${coverClass}" ${coverStyle}>
                 ${cardInnerHtml}
-                
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
-                        ${item.dname ? `<h3>${item.dname}</h3>` : ''}
+                        ${item.dname ? `<h3>${escapeHtml(item.dname)}</h3>` : ''}
                         <div id="${uniqueId}-image" class="dtl-image">
-                            ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
+                            ${itemImage ? `<img src="${encodeURI(itemImage)}" alt="${escapeHtml(item.dname || 'Details')}" />` : ''}
                         </div>
                         <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
-                        
-                        <!-- Safe Share Button renders ONLY if Detail_Sharable == "Y" -->
                         ${isSharable ? `
                         <div class="details-share-wrapper">
                             <button onclick="shareDetails(this, event)" 
@@ -443,12 +411,13 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 ` : ''}
           </div>`;
     });
+
+    container.innerHTML = cardsHtml.join('');
 }
+
 function renderNewsFeed() {
     const newsContainer = document.getElementById("news-feed");
     if (!newsContainer) return;
-
-    newsContainer.innerHTML = "";
 
     if (dbNews.length === 0) {
         newsContainer.innerHTML = `<p class="no-events">No news announcements posted yet.</p>`;
@@ -457,52 +426,47 @@ function renderNewsFeed() {
 
     const sortedNews = [...dbNews].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    sortedNews.forEach(item => {
-        const displayDate = item.date 
-            ? new Date(item.date).toLocaleDateString([], { month: 'short', day: '2-digit' }) + ", " + 
-              new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : "Recent Update";
-
+    const newsHtml = sortedNews.map(item => {
         const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
         const imageHtml = item.image 
-            ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
+            ? `<img src="${encodeURI(item.image)}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
             : "";
 
-        newsContainer.innerHTML += `
+        return `
             <div class="card news-card">
-                <div class="card-title news-card-title">${item.title}</div>
+                <div class="card-title news-card-title">${escapeHtml(item.title)}</div>
                 ${imageHtml}
                 <p class="dtl-desc news-card-desc">${item.content}</p>
             </div>`;
     });
+
+    newsContainer.innerHTML = newsHtml.join('');
 }
 
 function renderInformation() {
-    // 1. Render General Information (Amenities Table)
+    // 1. Render Amenities
     const amenitiesContainer = document.getElementById("panel-amenities");
     if (amenitiesContainer) {
         if (dbAmenities.length === 0) {
             amenitiesContainer.innerHTML = `<p class="no-events">No general information posted yet.</p>`;
         } else {
-            amenitiesContainer.innerHTML = "";
             const sortedAmenities = [...dbAmenities].sort((a, b) => a.title.localeCompare(b.title));
-
-            sortedAmenities.forEach(item => {
+            const amenitiesHtml = sortedAmenities.map(item => {
                 const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
                 const imageHtml = item.image 
-                    ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="Amenity image" />` 
+                    ? `<img src="${encodeURI(item.image)}" class="news-thumb ${alignmentClass}" alt="Amenity image" />` 
                     : "";
 
-                amenitiesContainer.innerHTML += `
+                return `
                     <div class="card news-card">
-                        <div class="card-title news-card-title">${item.title}</div>
+                        <div class="card-title news-card-title">${escapeHtml(item.title)}</div>
                         ${imageHtml}
                         <p class="dtl-desc news-card-desc">${item.content}</p>
                     </div>`;
             });
+            amenitiesContainer.innerHTML = amenitiesHtml.join('');
         }
-        // Automatically expand any accordion item that starts with the 'active' class
-        // Recalculate active panel height after DOM updates
+
         setTimeout(() => {
             const activeItem = document.querySelector('.accordion-item.active');
             if (activeItem) {
@@ -514,50 +478,44 @@ function renderInformation() {
         }, 100);
     }
 
-    // 2. Render Food Options (Food Table)
+    // 2. Render Food Options
     const foodContainer = document.getElementById("panel-food");
     if (foodContainer) {
         if (dbFood.length === 0) {
             foodContainer.innerHTML = `<p class="no-events">No food vendor options available yet.</p>`;
         } else {
-            foodContainer.innerHTML = "";
-            // FIX: Changed b.title -> b.name
             const sortedFood = [...dbFood].sort((a, b) => a.name.localeCompare(b.name));
-
-            sortedFood.forEach(item => {
+            const foodHtml = sortedFood.map(item => {
                 const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
                 const imageHtml = item.image 
-                    ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="Food image" />` 
+                    ? `<img src="${encodeURI(item.image)}" class="news-thumb ${alignmentClass}" alt="Food image" />` 
                     : "";
 
-                foodContainer.innerHTML += `
+                return `
                     <div class="card news-card">
-                        <div class="card-title news-card-title">${item.name}</div>
+                        <div class="card-title news-card-title">${escapeHtml(item.name)}</div>
                         ${imageHtml}
                         <p class="dtl-desc news-card-desc">${item.descrip}</p>
                     </div>`;
             });
+            foodContainer.innerHTML = foodHtml.join('');
         }
     }
 }
 
-// Interactive Accordion Panel Toggle Handler
 function toggleAccordion(headerBtn) {
     const accordionItem = headerBtn.parentElement;
     const panel = accordionItem.querySelector('.accordion-panel');
     const isActive = accordionItem.classList.contains('active');
 
-    // Optional: Close all other open accordion panels (Single-accordion mode)
     document.querySelectorAll('.accordion-item').forEach(item => {
         item.classList.remove('active');
         const p = item.querySelector('.accordion-panel');
         if (p) p.style.maxHeight = null;
     });
 
-    // Toggle current clicked item
     if (!isActive) {
         accordionItem.classList.add('active');
-        // Calculate full scrollHeight so smooth transition expands correctly
         panel.style.maxHeight = panel.scrollHeight + "px";
     }
 }
@@ -571,13 +529,11 @@ function toggleCardDetails(targetDivId) {
         targetDiv.classList.toggle('show');
         
         const toggleBtn = document.getElementById(`${targetDivId}-btn`);
-        if (toggleBtn) {
-            toggleBtn.classList.toggle('active');
-        }
+        if (toggleBtn) toggleBtn.classList.toggle('active');
 
         if (targetDiv.classList.contains('show')) {
             setTimeout(() => {
-                targetDiv.parentElement.scrollIntoView({ 
+                targetDiv.parentElement?.scrollIntoView({ 
                     behavior: 'smooth',
                     block: 'nearest'
                 });
@@ -622,15 +578,13 @@ function openLocationInAppMap(mapUrl) {
     if (!mapUrl || mapUrl === '#') return;
 
     const mapIframe = document.getElementById('default-map');
-    if (mapIframe) {
-        mapIframe.src = mapUrl;
-    }
+    if (mapIframe) mapIframe.src = mapUrl;
 
     switchTab('map');
 }
 
 function switchTab(target) {
-document.querySelectorAll('.tab-content').forEach(s => {
+    document.querySelectorAll('.tab-content').forEach(s => {
         s.classList.add('hidden');
         s.classList.remove('animate-fade');
     });
@@ -645,7 +599,6 @@ document.querySelectorAll('.tab-content').forEach(s => {
         window.scrollTo({ top: 0, behavior: 'instant' }); 
     }
     
-    // RECALCULATE ACCORDION HEIGHT WHEN INFO TAB BECOMES VISIBLE
     if (target === 'info') {
         setTimeout(() => {
             const activeItem = document.querySelector('.accordion-item.active');
@@ -657,11 +610,11 @@ document.querySelectorAll('.tab-content').forEach(s => {
             }
         }, 50);
     }    
+
     const navBtn = document.getElementById(`nav-${target}`);
     if (navBtn) navBtn.classList.add('active');
 
-   // 5. Sliding Indicator Tracking
-   const indicator = document.getElementById('nav-indicator');
+    const indicator = document.getElementById('nav-indicator');
     if (indicator) {
         const tabPositions = {
             'home': 0,
@@ -672,7 +625,6 @@ document.querySelectorAll('.tab-content').forEach(s => {
         };
         
         const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
-        // Shifts by 100% of the wrapper's width (which is exactly 1/5th of the nav bar)
         indicator.style.transform = `translateY(-50%) translateX(${positionIndex * 100}%)`;
     }
 }
@@ -680,37 +632,33 @@ document.querySelectorAll('.tab-content').forEach(s => {
 function switchDay(dateStr, event) {
     selectedDayString = dateStr;
     document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
-    if(event && event.target) {
-        event.target.classList.add('active');
-    }
+    if (event?.target) event.target.classList.add('active');
     processAllSchedules();
 }
 
 /* ==========================================================================
-   8. APPLICATION BOOTSTRAPPER
+   8. APPLICATION BOOTSTRAPPER & EVENT LISTENERS
    ========================================================================== */
 initDatabaseApp();
 
-// ==========================================
-// HIDE / SHOW FLOATING NAV ON SCROLL
-// ==========================================
 let lastScrollY = window.scrollY;
 const navBar = document.querySelector('.bottom-nav');
 
 window.addEventListener('scroll', () => {
-  const currentScrollY = window.scrollY;
+    if (!navBar) return;
+    const currentScrollY = window.scrollY;
 
-  if (currentScrollY <= 0) {
-    navBar.classList.remove('nav-hidden');
+    if (currentScrollY <= 0) {
+        navBar.classList.remove('nav-hidden');
+        lastScrollY = currentScrollY;
+        return;
+    }
+
+    if (currentScrollY > lastScrollY + 10) {
+        navBar.classList.add('nav-hidden');
+    } else if (currentScrollY < lastScrollY - 10) {
+        navBar.classList.remove('nav-hidden');
+    }
+
     lastScrollY = currentScrollY;
-    return;
-  }
-
-  if (currentScrollY > lastScrollY + 10) {
-    navBar.classList.add('nav-hidden');
-  } else if (currentScrollY < lastScrollY - 10) {
-    navBar.classList.remove('nav-hidden');
-  }
-
-  lastScrollY = currentScrollY;
-});
+}, { passive: true });
