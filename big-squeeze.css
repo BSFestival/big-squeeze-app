@@ -709,6 +709,14 @@ button,
   opacity: 1;
 }
 
+.accordion-header {
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), background-color 0.2s ease, color 0.2s ease;
+}
+
+.accordion-header:active {
+  transform: scale(0.98); /* Squeezes down slightly on press */
+}
+
 .panel-content {
   padding: 16px;
   line-height: 1.5;
