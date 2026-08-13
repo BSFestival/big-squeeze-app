@@ -29,7 +29,7 @@ const cardsHtml=list.map((item,index)=>{const hasDates=Boolean(item.start&&item.
                 <div class="card-content-stack">
                     <div class="card-text-block">
                         <div class="card-title">${escapeHtml(cardTitle)}</div>
-                        ${(hasDates) ? `<span class="time">${startD}${startT}-${endT}</span>` : ''}
+                        ${(hasDates) ? `<span class="time">${startD} ${startT} - ${endT}</span>` : ''}
                         <div class="location">${escapeHtml(item.locationName || 'Festival Grounds')}${item.town && item.town !== 'Unknown' ? `,${escapeHtml(item.town)}` : ''}</div>
                     </div>
 
