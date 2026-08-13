@@ -331,6 +331,7 @@ function handleTownSliderChange(val) {
     if (labelAll) labelAll.classList.toggle("active", val == 1);
     if (labelDecaturville) labelDecaturville.classList.toggle("active", val == 2);
 
+   navigator.vibrate(100);
     processAllSchedules();
 }
 
