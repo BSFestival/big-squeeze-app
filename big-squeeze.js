@@ -23,6 +23,8 @@ let dbFood = [];
 let selectedDayString = ""; 
 let selectedTownFilter = "ALL";
 let scheduleRefreshTimer = null;
+let hasVisitedEvents = false;
+let hasVisitedStands = false;
 
 // Utility function to escape HTML special characters
 function escapeHtml(str) {
@@ -605,30 +607,29 @@ function switchTab(target) {
         window.scrollTo({ top: 0, behavior: 'instant' }); 
     }
 
-   if (target === 'events' || target === 'stands') {
-       // Trigger Day Buttons Attention Microinteraction
-       const dayContainer = document.querySelector('.day-filter-container');
-       if (dayContainer) {
-           dayContainer.classList.remove('animate-attention');
-           void dayContainer.offsetWidth; // Force DOM reflow to restart animation
-           dayContainer.classList.add('animate-attention');
+   if ((target === 'events' || target === 'stands') && (!hasVisitedEvents || !hasVisitedStands)) {
+        // Trigger if visiting either screen for the first time
+        if ((target === 'events' && !hasVisitedEvents) || (target === 'stands' && !hasVisitedStands)) {
+            const dayContainer = document.querySelector('.day-filter-container');
+            if (dayContainer) {
+                dayContainer.classList.remove('animate-attention');
+                void dayContainer.offsetWidth; // Reflow to trigger
+                dayContainer.classList.add('animate-attention');
+
+                setTimeout(() => {
+                    dayContainer.classList.remove('animate-attention');
+                }, 1600);
+            }
+        }
+    }   
    
-           setTimeout(() => {
-               dayContainer.classList.remove('animate-attention');
-           }, 1600);
-       }
-   }   
-   
-   // Trigger Town Slider Pulse on Stands Screen Visit
-    if (target === 'stands') {
+if (target === 'stands' && !hasVisitedStands) {
         const slider = document.getElementById('town-range-slider');
         if (slider) {
-            // Remove first in case it's still present, then re-add to restart animation
             slider.classList.remove('animate-pulse');
-            void slider.offsetWidth; // Force DOM reflow to re-trigger keyframes
+            void slider.offsetWidth; // Reflow to trigger
             slider.classList.add('animate-pulse');
 
-            // Remove class after 2 seconds (3 pulses * 0.6s = 1.8s + buffer)
             setTimeout(() => {
                 slider.classList.remove('animate-pulse');
             }, 2000);
@@ -646,6 +647,10 @@ function switchTab(target) {
             }
         }, 50);
     }    
+
+   // Update session visit switches
+    if (target === 'events') hasVisitedEvents = true;
+    if (target === 'stands') hasVisitedStands = true;
    
     const navBtn = document.getElementById(`nav-${target}`);
     if (navBtn) navBtn.classList.add('active');
