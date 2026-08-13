@@ -635,7 +635,8 @@ function switchTab(target) {
         }
     }
    
-    if (target === 'info') {
+if (target === 'info') {
+        // 1. Recalculate expanded height for default active panel
         setTimeout(() => {
             const activeItem = document.querySelector('.accordion-item.active');
             if (activeItem) {
@@ -645,8 +646,20 @@ function switchTab(target) {
                 }
             }
         }, 50);
-    }    
 
+        // 2. Trigger Accordion "Tease" Microinteraction
+        const accordionContainer = document.querySelector('.accordion-container');
+        if (accordionContainer) {
+            accordionContainer.classList.remove('animate-tease');
+            void accordionContainer.offsetWidth; // Reflow to re-trigger
+            accordionContainer.classList.add('animate-tease');
+
+            setTimeout(() => {
+                accordionContainer.classList.remove('animate-tease');
+            }, 1800);
+        }
+    }
+   
     const navBtn = document.getElementById(`nav-${target}`);
     if (navBtn) navBtn.classList.add('active');
 
