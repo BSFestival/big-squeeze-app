@@ -226,7 +226,7 @@ async function initDatabaseApp() {
                 dbNews.unshift({
                     sortOrder: 0,
                     title: "Lemonade Stands are Open!",
-                    content: "",
+                    content: "For a complete list and locations, click on the glass icon in the navigation bar at the bottom.",
                     image: "",
                     imageLoc: "L",
                     importance: "H"
