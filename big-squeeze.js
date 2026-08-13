@@ -604,7 +604,23 @@ function switchTab(target) {
         targetScreen.classList.add('animate-fade');
         window.scrollTo({ top: 0, behavior: 'instant' }); 
     }
-    
+
+   // Trigger Town Slider Pulse on Stands Screen Visit
+    if (target === 'stands') {
+        const slider = document.getElementById('town-range-slider');
+        if (slider) {
+            // Remove first in case it's still present, then re-add to restart animation
+            slider.classList.remove('animate-pulse');
+            void slider.offsetWidth; // Force DOM reflow to re-trigger keyframes
+            slider.classList.add('animate-pulse');
+
+            // Remove class after 2 seconds (3 pulses * 0.6s = 1.8s + buffer)
+            setTimeout(() => {
+                slider.classList.remove('animate-pulse');
+            }, 2000);
+        }
+    }
+   
     if (target === 'info') {
         setTimeout(() => {
             const activeItem = document.querySelector('.accordion-item.active');
