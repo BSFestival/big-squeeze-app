@@ -561,6 +561,30 @@ button,
   cursor: pointer;
 }
 
+/* Slider Pulse Microinteraction Keyframes */
+@keyframes thumbPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: scale(1.35); /* Slightly enlarge to draw the eye */
+    box-shadow: 0 0 12px var(--avocado); /* Soft accent glow */
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+}
+
+#town-range-slider.animate-pulse::-webkit-slider-thumb {
+  animation: thumbPulse 0.6s ease-in-out 3; /* 3 pulses @ 0.6s each = 1.8s total */
+}
+
+#town-range-slider.animate-pulse::-moz-range-thumb {
+  animation: thumbPulse 0.6s ease-in-out 3;
+}
+
 /* ==========================================================================
    7. OVERLAYS & DRAWERS (Dropdowns, Accordions & Expandables)
    ========================================================================== */
