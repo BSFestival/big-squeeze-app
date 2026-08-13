@@ -215,6 +215,25 @@ async function initDatabaseApp() {
           };
         });
 
+        // DYNAMIC ALERT: Check if current device time falls between Stands_Open and Stands_Close
+        if (params["Stands_Open"] && params["Stands_Close"]) {
+            const now = new Date();
+            const openTime = new Date(params["Stands_Open"].trim());
+            const closeTime = new Date(params["Stands_Close"].trim());
+
+            // Validate dates and test if current time is within open window
+            if (!isNaN(openTime) && !isNaN(closeTime) && now >= openTime && now <= closeTime) {
+                dbNews.unshift({
+                    sortOrder: 0,
+                    title: "Lemonade Stands are Open!",
+                    content: "",
+                    image: "",
+                    imageLoc: "L",
+                    importance: "H"
+                });
+            }
+        }
+       
         // Build Amenities Array
         dbAmenities = rawAmenities.map(row => {
             const locId = row.Amenity_Loc_ID ? row.Amenity_Loc_ID.trim() : "";
