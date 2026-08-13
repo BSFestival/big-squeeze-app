@@ -605,6 +605,20 @@ function switchTab(target) {
         window.scrollTo({ top: 0, behavior: 'instant' }); 
     }
 
+   if (target === 'events' || target === 'stands') {
+       // Trigger Day Buttons Attention Microinteraction
+       const dayContainer = document.querySelector('.day-filter-container');
+       if (dayContainer) {
+           dayContainer.classList.remove('animate-attention');
+           void dayContainer.offsetWidth; // Force DOM reflow to restart animation
+           dayContainer.classList.add('animate-attention');
+   
+           setTimeout(() => {
+               dayContainer.classList.remove('animate-attention');
+           }, 1600);
+       }
+   }   
+   
    // Trigger Town Slider Pulse on Stands Screen Visit
     if (target === 'stands') {
         const slider = document.getElementById('town-range-slider');
