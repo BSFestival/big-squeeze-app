@@ -202,16 +202,17 @@ async function initDatabaseApp() {
 
         // Build News Feed Array
         dbNews = rawNews.map(row => {
-            let processedContent = row.News_Content ? row.News_Content.trim() : "";
-            processedContent = processedContent.replace(/\n/g, "<br>"); 
-
-            return {
-                date: row.News_Date ? row.News_Date.trim() : "",
-                title: row.News_Title ? row.News_Title.trim() : "Announcement",
-                content: processedContent,
-                image: row.News_Image ? row.News_Image.trim() : "",
-                imageLoc: row.News_Image_Loc ? row.News_Image_Loc.trim().toUpperCase() : "L"
-            };
+          let processedContent = row.News_Content ? row.News_Content.trim() : "";
+          processedContent = processedContent.replace(/\n/g, "<br>"); 
+      
+          return {
+              sortOrder: row.News_Sort_Order ? parseInt(row.News_Sort_Order.trim(), 10) || 0 : 0,
+              title: row.News_Title ? row.News_Title.trim() : "Announcement",
+              content: processedContent,
+              image: row.News_Image ? row.News_Image.trim() : "",
+              imageLoc: row.News_Image_Loc ? row.News_Image_Loc.trim().toUpperCase() : "L",
+              importance: row.News_Importance ? row.News_Importance.trim().toUpperCase() : "N"
+          };
         });
 
         // Build Amenities Array
@@ -428,17 +429,32 @@ function renderNewsFeed() {
         return;
     }
 
-    const sortedNews = [...dbNews].sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Weight map for News_Importance (High -> Normal -> Low)
+    const importanceWeight = { 'H': 1, 'N': 2, 'L': 3 };
+
+    // Sort 1st by Importance (H > N > L), 2nd by News_Sort_Order (Ascending: 1, 2, 3...)
+    const sortedNews = [...dbNews].sort((a, b) => {
+        const weightA = importanceWeight[a.importance] || 2;
+        const weightB = importanceWeight[b.importance] || 2;
+
+        if (weightA !== weightB) {
+            return weightA - weightB; // Primary sort
+        }
+        return a.sortOrder - b.sortOrder; // Secondary sort
+    });
 
     const newsHtml = sortedNews.map(item => {
         const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
         const imageHtml = item.image 
             ? `<img src="${encodeURI(item.image)}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
             : "";
+        
+        // Apply --habanero color class if high importance
+        const highClass = item.importance === "H" ? "news-title-high" : "";
 
         return `
             <div class="card news-card">
-                <div class="card-title news-card-title">${escapeHtml(item.title)}</div>
+                <div class="card-title news-card-title ${highClass}">${escapeHtml(item.title)}</div>
                 ${imageHtml}
                 <p class="dtl-desc news-card-desc">${item.content}</p>
             </div>`;
