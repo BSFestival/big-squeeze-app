@@ -88,11 +88,24 @@
             <div class="screen-title">Information</div>
             <div id="lemmy-lemonade" class="character-r"><img src="./images/character/lemmy-thumbsup-512.webp" width="25%" alt="" /></div>
             <div>
-                <p class="dtl-desc">The Big Squeeze began in 2014 with the mission to honor and support our local veterans. Businesses and organizations across the county erect and decorate lemonade stands to solicit monetary donations. All funds raised from the lemonade stands are donated to our VFW and American Legion chapters. Over the years the festival grew with the addition of events and activities. In 2026 The Big Squeeze became a two-day festival.</p>
+
             </div>
             <div class="accordion-container">
-                <!-- 1. GENERAL INFORMATION (AMENITIES) - OPEN BY DEFAULT -->
+                <!-- 1. ABOUNT THE FESTIVAL (HARDCODED) - OPEN BY DEFAULT -->
                 <div class="accordion-item active">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>About the Festival</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-panel">
+                        <div class="panel-content" id="panel-amenities">
+                            <p>The Big Squeeze began in 2014 with the mission to honor and support our local veterans. Businesses and organizations across the county erect and decorate lemonade stands to solicit monetary donations. All funds raised from the lemonade stands are donated to our VFW and American Legion chapters. Over the years the festival grew with the addition of events and activities. In 2026 The Big Squeeze became a two-day festival.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2. FESTIVAL AMENITIES -->
+                <div class="accordion-item">
                     <button class="accordion-header" onclick="toggleAccordion(this)">
                         <span>Festival Amenities</span>
                         <span class="accordion-icon">+</span>
@@ -104,7 +117,7 @@
                     </div>
                 </div>
         
-                <!-- 2. FOOD OPTIONS -->
+                <!-- 3. FOOD OPTIONS -->
                 <div class="accordion-item">
                     <button class="accordion-header" onclick="toggleAccordion(this)">
                         <span>Food Options</span>
@@ -117,7 +130,7 @@
                     </div>
                 </div>
         
-                <!-- 3. FAQS (HARDCODED) -->
+                <!-- 4. FAQS (HARDCODED) -->
                 <div class="accordion-item">
                     <button class="accordion-header" onclick="toggleAccordion(this)">
                         <span>FAQs</span>
@@ -141,7 +154,7 @@
                         </div>
                     </div>
                 </div>
-            <!-- 4. GET INVOLVED (HARDCODED) -->
+            <!-- 5. GET INVOLVED (HARDCODED) -->
             <div class="accordion-item">
                 <button class="accordion-header" onclick="toggleAccordion(this)">
                     <span>Get Involved</span>
