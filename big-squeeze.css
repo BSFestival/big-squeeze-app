@@ -644,6 +644,13 @@ button,
   display: block; 
 }
 
+.details-actions-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
 .dtl-desc { 
   line-height: 1.5; 
   color: var(--thyme); 
