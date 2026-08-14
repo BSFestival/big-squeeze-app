@@ -184,10 +184,11 @@ async function initDatabaseApp() {
                 dname: dbDetails[DtlId]?.name || "",
                 image: dbDetails[DtlId]?.image || "",
                 details: dbDetails[DtlId]?.desc || "",
-                shareEvt: dbDetails[DtlId]?.shareDtl || ""
+                shareEvt: dbDetails[DtlId]?.shareDtl || "",
+                document: row.Event_Documents ? row.Event_Documents.trim() : "" // NEW FIELD
             };
         });
-
+       
         // Build Stands Array
         dbStands = rawStands.map(row => {
             const locId = row.Stand_Loc_ID ? row.Stand_Loc_ID.trim() : "";
@@ -356,85 +357,92 @@ function renderCards(list, elementId, emptyMsg, isLive) {
     }
 
     const cardsHtml = list.map((item, index) => {
-        const hasDates = Boolean(item.start && item.start.trim() !== "");
-        const startD = hasDates ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "??";
-        const startT = hasDates ? new Date(item.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
-        const endT = item.end ? new Date(item.end).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
+    const hasDates = Boolean(item.start && item.start.trim() !== "");
+    const startD = hasDates ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "??";
+    const startT = hasDates ? new Date(item.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
+    const endT = item.end ? new Date(item.end).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
         
-        const itemDetails = item.details ? item.details.trim() : (item.content ? item.content.trim() : "");
-        const itemImage = item.image ? item.image.trim() : "";
-        const hasDetailsButton = (itemDetails !== "") || (itemImage !== "");
-        const isEventsScreen = elementId === "all-events";
-        const isSharable = isEventsScreen && item.shareEvt && item.shareEvt.trim().toUpperCase() === "Y";
-        const uniqueId = `${elementId}-details-${index}`;
+    const itemDetails = item.details ? item.details.trim() : (item.content ? item.content.trim() : "");
+    const itemImage = item.image ? item.image.trim() : "";
+    const hasDetailsButton = (itemDetails !== "") || (itemImage !== "");
+    const isEventsScreen = elementId === "all-events";
+    const isSharable = isEventsScreen && item.shareEvt && item.shareEvt.trim().toUpperCase() === "Y";
+    const uniqueId = `${elementId}-details-${index}`;
         
-        const cardTitle = item.name || item.title || 'Unnamed';
-        const safeDetailsAttr = escapeHtml(itemDetails.replace(/<br\s*\/?>/gi, ' '));
-        const safeTitleAttr = escapeHtml(cardTitle);
+    const cardTitle = item.name || item.title || 'Unnamed';
+    const safeDetailsAttr = escapeHtml(itemDetails.replace(/<br\s*\/?>/gi, ' '));
+    const safeTitleAttr = escapeHtml(cardTitle);
 
-        const isStandsScreen = elementId === "all-stands" || elementId.includes("stands");
-        const inlineClass = isStandsScreen ? "ca-inline" : "";
+    const isStandsScreen = elementId === "all-stands" || elementId.includes("stands");
+    const inlineClass = isStandsScreen ? "ca-inline" : "";
 
-        const hasCover = Boolean(item.coverImage && item.coverImage.trim() !== "");
-        const coverStyle = hasCover ? `style="--card-cover: url('${encodeURI(item.coverImage.trim())}');"` : '';
-        const coverClass = hasCover ? 'has-cover-image' : '';
+    const hasCover = Boolean(item.coverImage && item.coverImage.trim() !== "");
+    const coverStyle = hasCover ? `style="--card-cover: url('${encodeURI(item.coverImage.trim())}');"` : '';
+    const coverClass = hasCover ? 'has-cover-image' : '';
+    const hasDocument = Boolean(item.document && item.document !== "");
+    const hasActionFooter = isSharable || hasDocument;
 
-        let cardInnerHtml = "";
+    let cardInnerHtml = "";
 
-        if (isStandsScreen) {
-            cardInnerHtml = `
-                <div class="card-content-split">
-                    <div class="card-text-block">
-                        <div class="card-title">${escapeHtml(cardTitle)}</div>
-                        <div class="location">${escapeHtml(item.locationName || 'Festival Grounds')}${item.town && item.town !== 'Unknown' ? `, ${escapeHtml(item.town)}` : ''}</div>
-                    </div>
+    if (isStandsScreen) {
+        cardInnerHtml = `
+            <div class="card-content-split">
+                <div class="card-text-block">
+                    <div class="card-title">${escapeHtml(cardTitle)}</div>
+                    <div class="location">${escapeHtml(item.locationName || 'Festival Grounds')}${item.town && item.town !== 'Unknown' ? `, ${escapeHtml(item.town)}` : ''}</div>
+                </div>
 
-                    <div class="card-actions ca-inline">
+                <div class="card-actions ca-inline">
+                    ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${encodeURI(item.mapUrl)}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
+                </div>
+            </div>`;
+    } else {
+        cardInnerHtml = `
+            <div class="card-content-stack">
+                <div class="card-text-block">
+                    <div class="card-title">${escapeHtml(cardTitle)}</div>
+                    ${(hasDates) ? `<span class="time">${startD} ${startT} - ${endT}</span>` : ''}
+                    <div class="location">${escapeHtml(item.locationName || 'Festival Grounds')}${item.town && item.town !== 'Unknown' ? `, ${escapeHtml(item.town)}` : ''}</div>
+                </div>
+
+                <div class="card-bottom-row">
+                    <div class="card-actions ${inlineClass}">
                         ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${encodeURI(item.mapUrl)}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                         ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
                     </div>
-                </div>`;
-        } else {
-            cardInnerHtml = `
-                <div class="card-content-stack">
-                    <div class="card-text-block">
-                        <div class="card-title">${escapeHtml(cardTitle)}</div>
-                        ${(hasDates) ? `<span class="time">${startD} ${startT} - ${endT}</span>` : ''}
-                        <div class="location">${escapeHtml(item.locationName || 'Festival Grounds')}${item.town && item.town !== 'Unknown' ? `, ${escapeHtml(item.town)}` : ''}</div>
-                    </div>
+                </div>
+            </div>`;
+    }
 
-                    <div class="card-bottom-row">
-                        <div class="card-actions ${inlineClass}">
-                            ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${encodeURI(item.mapUrl)}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
-                            ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
-                        </div>
+    return `
+        <div class="card highlight-shadow-box ${coverClass}" ${coverStyle}>
+            ${cardInnerHtml}
+            ${hasDetailsButton ? `
+                <div id="${uniqueId}" class="expanded-details">
+                    ${item.dname ? `<h3>${escapeHtml(item.dname)}</h3>` : ''}
+                    <div id="${uniqueId}-image" class="dtl-image">
+                        ${itemImage ? `<img src="${encodeURI(itemImage)}" alt="${escapeHtml(item.dname || 'Details')}" />` : ''}
                     </div>
-                </div>`;
-        }
-
-        return `
-            <div class="card highlight-shadow-box ${coverClass}" ${coverStyle}>
-                ${cardInnerHtml}
-                ${hasDetailsButton ? `
-                    <div id="${uniqueId}" class="expanded-details">
-                        ${item.dname ? `<h3>${escapeHtml(item.dname)}</h3>` : ''}
-                        <div id="${uniqueId}-image" class="dtl-image">
-                            ${itemImage ? `<img src="${encodeURI(itemImage)}" alt="${escapeHtml(item.dname || 'Details')}" />` : ''}
-                        </div>
-                        <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
-                        ${isSharable ? `
-                        <div class="details-share-wrapper">
-                            <button onclick="shareDetails(this, event)" 
-                                    data-title="${safeTitleAttr}" 
-                                    data-details="${safeDetailsAttr}" 
-                                    class="g-btn" 
-                                    aria-label="Share Event">
-                                <img src="images/buttons/share.webp" alt="Share" />
-                            </button>
-                        </div>` : ''}
-                    </div>
-                ` : ''}
-          </div>`;
+                    <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
+                    ${hasActionFooter ? `
+                       <div class="details-actions-wrapper">
+                           ${hasDocument ? `
+                               <a href="${encodeURI(item.document)}" target="_blank" rel="noopener noreferrer" class="g-btn" aria-label="Open Document" onclick="event.stopPropagation();">
+                                   <img src="images/buttons/docs.webp" alt="Document" />
+                               </a>` : ''}
+                           ${isSharable ? `
+                               <button onclick="shareDetails(this, event)" 
+                                       data-title="${safeTitleAttr}" 
+                                       data-details="${safeDetailsAttr}" 
+                                       class="g-btn" 
+                                       aria-label="Share Event">
+                                   <img src="images/buttons/share.webp" alt="Share" />
+                               </button>` : ''}
+                       </div>` : ''}
+                </div>
+            ` : ''}
+      </div>`;
     });
 
     container.innerHTML = cardsHtml.join('');
