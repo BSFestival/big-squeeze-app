@@ -332,7 +332,7 @@ function handleTownSliderChange(val) {
     if (labelAll) labelAll.classList.toggle("active", val == 1);
     if (labelDecaturville) labelDecaturville.classList.toggle("active", val == 2);
 
-   navigator.vibrate(10);
+   navigator.vibrate(05);
     processAllSchedules();
 }
 
@@ -721,7 +721,7 @@ function switchDay(dateStr, event) {
     selectedDayString = dateStr;
     document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
     if (event?.target) event.target.classList.add('active');
-    navigator.vibrate(10);
+    navigator.vibrate(05);
     processAllSchedules();
 }
 
