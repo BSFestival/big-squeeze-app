@@ -269,7 +269,7 @@ async function initDatabaseApp() {
         processAllSchedules();
         renderNewsFeed();
         renderInformation();
-        switchTab('home');
+        switchTab('home', false);
 
         // Hide Loading Screen
         const loadingElem = document.getElementById("loading-screen") || document.querySelector(".spinner");
@@ -755,12 +755,14 @@ window.addEventListener('scroll', () => {
 // Global handler for hardware/browser back and forward buttons
 window.addEventListener('popstate', (event) => {
     if (event.state && event.state.tab) {
-        // Pass false so popstate navigation doesn't push a redundant history entry
         switchTab(event.state.tab, false);
     } else {
         switchTab('home', false);
     }
 });
 
-// Seed the initial history state so the user can return to 'home'
-window.history.replaceState({ tab: 'home' }, '', '#home');
+// Seed the root state onto the existing page load entry rather than creating a new one
+if (!window.history.state) {
+    window.history.replaceState({ tab: 'home' }, '', '#home');
+}
+
