@@ -635,7 +635,7 @@ function openLocationInAppMap(mapUrl) {
     switchTab('map');
 }
 
-function switchTab(target) {
+function switchTab(target, pushToHistory = true) {
     document.querySelectorAll('.tab-content').forEach(s => {
         s.classList.add('hidden');
         s.classList.remove('animate-fade');
@@ -651,13 +651,17 @@ function switchTab(target) {
         window.scrollTo({ top: 0, behavior: 'instant' }); 
     }
 
-   if ((target === 'events' || target === 'stands') && (!hasVisitedEvents || !hasVisitedStands)) {
-        // Trigger if visiting either screen for the first time
+    // Push state to browser history only on user-initiated tab clicks (not on back/forward buttons)
+    if (pushToHistory) {
+        window.history.pushState({ tab: target }, '', `#${target}`);
+    }
+
+    if ((target === 'events' || target === 'stands') && (!hasVisitedEvents || !hasVisitedStands)) {
         if ((target === 'events' && !hasVisitedEvents) || (target === 'stands' && !hasVisitedStands)) {
             const dayContainer = document.querySelector('.day-filter-container');
             if (dayContainer) {
                 dayContainer.classList.remove('animate-attention');
-                void dayContainer.offsetWidth; // Reflow to trigger
+                void dayContainer.offsetWidth; 
                 dayContainer.classList.add('animate-attention');
 
                 setTimeout(() => {
@@ -666,12 +670,12 @@ function switchTab(target) {
             }
         }
     }   
-   
-if (target === 'stands' && !hasVisitedStands) {
+    
+    if (target === 'stands' && !hasVisitedStands) {
         const slider = document.getElementById('town-range-slider');
         if (slider) {
             slider.classList.remove('animate-pulse');
-            void slider.offsetWidth; // Reflow to trigger
+            void slider.offsetWidth; 
             slider.classList.add('animate-pulse');
 
             setTimeout(() => {
@@ -679,7 +683,7 @@ if (target === 'stands' && !hasVisitedStands) {
             }, 2000);
         }
     }
-   
+    
     if (target === 'info') {
         setTimeout(() => {
             const activeItem = document.querySelector('.accordion-item.active');
@@ -692,10 +696,9 @@ if (target === 'stands' && !hasVisitedStands) {
         }, 50);
     }    
 
-   // Update session visit switches
     if (target === 'events') hasVisitedEvents = true;
     if (target === 'stands') hasVisitedStands = true;
-   
+    
     const navBtn = document.getElementById(`nav-${target}`);
     if (navBtn) navBtn.classList.add('active');
 
@@ -748,3 +751,16 @@ window.addEventListener('scroll', () => {
 
     lastScrollY = currentScrollY;
 }, { passive: true });
+
+// Global handler for hardware/browser back and forward buttons
+window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.tab) {
+        // Pass false so popstate navigation doesn't push a redundant history entry
+        switchTab(event.state.tab, false);
+    } else {
+        switchTab('home', false);
+    }
+});
+
+// Seed the initial history state so the user can return to 'home'
+window.history.replaceState({ tab: 'home' }, '', '#home');
